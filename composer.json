@@ -29,10 +29,7 @@
     }
   },
   "scripts": {
-    "test": "phpunit",
-    "init": "php spark migrate && php spark db:seed MainSeeder",
-    "serve": "php spark serve",
-    "seed": "php spark db:seed MainSeeder"
+    "test": "phpunit"
   },
   "support": {
     "forum": "https://forum.codeigniter.com/",
