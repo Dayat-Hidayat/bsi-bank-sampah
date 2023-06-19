@@ -1,20 +1,14 @@
-# CodeIgniter 4 Application Starter
+# CodeIgniter 4 BSI Bank Sampah
 
-## What is CodeIgniter?
+## Apa itu Bank Sampah?
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](https://codeigniter.com).
+Bank Sampah adalah sebuah sistem penyimpanan sampah dengan cara kita setor sampah ke pihak bank sampah lalu nanti sampah kita akan di konversi menjadi uang dalam bentuk saldo yang nanti akan tersimpan di rekening kita
 
-This repository holds a composer-installable app starter.
-It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+## Setup
 
-More information about the plans for version 4 can be found in [CodeIgniter 4](https://forum.codeigniter.com/forumdisplay.php?fid=28) on the forums.
-
-The user guide corresponding to the latest version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
-
-## Installation & updates
+- [XAMPP](https://www.apachefriends.org/download.html) PHP version 7.4 or higher is required
+- [intl](http://php.net/manual/en/intl.requirements.php)
+- [intl](http://php.net/manual/en/intl.requirements.php)
 
 `composer create-project codeigniter4/appstarter` then `composer update` whenever
 there is a new release of the framework.
@@ -30,11 +24,11 @@ and any database settings.
 
 ## Important Change with index.php
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
+`index.php` is no longer in the root of the project! It has been moved inside the _public_ folder,
 for better security and separation of components.
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
+This means that you should configure your web server to "point" to your project's _public_ folder, and
+not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter _public/..._, as the rest of your logic and the
 framework are exposed.
 
 **Please** read the user guide for a better explanation of how CI4 works!
