@@ -7,7 +7,7 @@ Bank Sampah adalah sebuah sistem penyimpanan sampah dengan cara kita setor sampa
 ## Setup
 
 - [XAMPP](https://www.apachefriends.org/download.html) XAMPP Versi 7.4 atau diatasnya
-- [intl](http://php.net/manual/en/intl.requirements.php)
+- [intl](http://php.net/manual/en/intl.requirements.php) Aktifkan intl pada XAMPP -> Apache -> Config -> PHP (php.ini) -> Cari ;extension=intl -> Hapus titik koma di awal lalu save
 
 - [Git](https://git-scm.com/)
 - [Composer](https://getcomposer.org/)
@@ -18,3 +18,4 @@ Lalu ketik ini di terminal
 - composer update && composer install
 - php spark migrate && php spark db:seed MainSeeder
 - php spark serve
+- http://localhost:8080
