@@ -66,7 +66,6 @@ class MainSeeder extends Seeder
         // Reset array index
         $teller = array_values($teller);
 
-
         $nasabah = [
             [
                 'username' => 'nasabah',
@@ -137,7 +136,8 @@ class MainSeeder extends Seeder
                 'nama' => $kategori_yang_ada[$i],
                 'taksiran' => $faker->numberBetween(1000, 10000),
                 // Kenapa Stok Pake Float ??
-                'stok' => $faker->randomFloat(2, 0, 30),
+                // Ubah Jadi number dari randomFloat(2, 0, 10)
+                'stok' => $faker->numberBetween(10, 50),
                 'terakhir_diperbarui' => $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format),
             ];
         }
@@ -147,7 +147,7 @@ class MainSeeder extends Seeder
 
         for ($i = 0; $i < count($nasabah); $i++) {
 
-            $jumlah_setoran = $faker->numberBetween(0, 15);
+            $jumlah_setoran = $faker->numberBetween(0, 5);
             $jumlah_penarikan = $faker->numberBetween(0, $jumlah_setoran);
 
             for ($j = 0; $j < $jumlah_setoran; $j++) {
@@ -156,7 +156,8 @@ class MainSeeder extends Seeder
                 $index_kategori_sampah = $faker->numberBetween(1, count($kategori) - 1);
                 $kategori_sampah = $kategori[$index_kategori_sampah]['nama'];
                 $taksiran = $kategori[$index_kategori_sampah]['taksiran'];
-                $berat = $faker->randomFloat(2, 0, 10);
+                // Ubah jadi number dari randomFloat(2, 0, 10)
+                $berat = $faker->numberBetween(5, 20);
                 $nominal = floor($berat * $taksiran);
                 $tanggal_setor = $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format);
 
