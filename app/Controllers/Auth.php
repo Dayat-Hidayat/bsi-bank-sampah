@@ -40,8 +40,9 @@ class Auth extends BaseController
             $this->session->set('user', $user);
             $this->session->set('role', $role);
 
-            var_dump($this->session->get('user'));
-            var_dump($this->session->get('role'));
+            // Pengecekan Menggunakan Var Dump
+            // var_dump($this->session->get('user'));
+            // var_dump($this->session->get('role'));
 
 
             // jika data tidak ada di tabel manapun, maka tampilkan pesan error
@@ -58,7 +59,11 @@ class Auth extends BaseController
             // agar memudahkan pengecekan di halaman lain
 
             // redirect ke halaman sesuai role
-            return redirect('auth/login');
+            if ($role == "nasabah") {
+                return redirect('nasabah');
+            } else {
+                return redirect('auth/login');
+            }
         } else {
             // jika bukan get atau post, maka tampilkan error 404
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();

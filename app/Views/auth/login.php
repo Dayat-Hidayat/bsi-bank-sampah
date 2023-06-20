@@ -4,16 +4,10 @@ $session = session();
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<?= $this->extend('layout/template'); ?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
+<?= $this->section('content'); ?>
+<div class="container">
     <form action="<?= base_url('auth/login') ?>" method="POST">
         <input type="text" name="username">
         <input type="password" name="password">
@@ -23,6 +17,5 @@ $session = session();
         <button>LOGOUT</button>
     </form>
     <?= var_dump($session->get('user')) ?>
-</body>
-
-</html>
+</div>
+<?= $this->endSection(); ?>
