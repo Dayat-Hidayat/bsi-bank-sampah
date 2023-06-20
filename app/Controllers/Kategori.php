@@ -3,11 +3,15 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
 class Kategori extends BaseController
 {
-    public function __construct()
+    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
+        parent::initController($request, $response, $logger);
         // cek role di session
         // jika role tidak sama dengan admin, maka
         // tampilkan halaman error 403 (404)
@@ -15,6 +19,7 @@ class Kategori extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
     }
+
     public function index()
     {
         // tampilan halaman list kategori

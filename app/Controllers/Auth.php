@@ -3,9 +3,17 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
 class Auth extends BaseController
 {
+    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
+    {
+        parent::initController($request, $response, $logger);
+    }
+
     public function login()
     {
         if ($this->request->is('get')) {
@@ -16,52 +24,35 @@ class Auth extends BaseController
 
             // ambil data dari form (username, password)
             $username = $this->request->getPost('username');
-            $password = $this->request->getPost('password');
+            $password = (string) $this->request->getPost('password');
+            $role = $this->request->getPost('role');
 
             // validasi data dengan cara cek masing masing tabel (admin, teller, nasabah)
             // untuk menentukan apakah data tersebut ada di tabel tersebut
             // dan untuk menentukan role dari user tersebut
             // jika data ada di tabel admin, maka role = admin, dst
-            $role = "";
-            $user = "";
+            $user = '';
 
-
-            if ($u = $this->admin_model->where('username', $username)->first()) {
-                $user = $u;
-                $role = "admin";
-            } else if ($u = $this->teller_model->where('username', $username)->first()) {
-                $user = $u;
-                $role = "teller";
-            } else if ($u = $this->nasabah_model->where('username', $username)->first()) {
-                $user = $u;
-                $role = "nasabah";
+            if ($role == 'admin') {
+                $user = $this->admin_model->where('username', $username)->first();
+            } else if ($role == 'teller') {
+                $user = $this->teller_model->where('username', $username)->first();
+            } else {
+                $user = $this->nasabah_model->where('username', $username)->first();
             }
 
-            $this->session->set('user', $user);
-            $this->session->set('role', $role);
+            if ($user) {
+                if (password_verify($password, $user['password'])) {
+                    $this->session->set('user', $user);
+                    $this->session->set('role', $role);
 
-            // Pengecekan Menggunakan Var Dump
-            // var_dump($this->session->get('user'));
-            // var_dump($this->session->get('role'));
-
-
-            // jika data tidak ada di tabel manapun, maka tampilkan pesan error
-            // menggunakan flashdata
-            // dan redirect ke halaman login kembali
-
-            // jika data ada di tabel manapun, tapi password tidak cocok, maka
-            // tampilkan pesan error menggunakan flashdata
-            // dan redirect ke halaman login kembali
-
-            // jika data ada di tabel manapun, dan password cocok, maka
-            // simpan data user tersebut ke session
-            // simpan juga role dari user tersebut ke session
-            // agar memudahkan pengecekan di halaman lain
-
-            // redirect ke halaman sesuai role
-            if ($role == "nasabah") {
-                return redirect('nasabah');
+                    return redirect($role);
+                } else {
+                    $this->session->setFlashdata('error', 'Password salah');
+                    return redirect('auth/login');
+                }
             } else {
+                $this->session->setFlashdata('error', 'Username tidak ditemukan');
                 return redirect('auth/login');
             }
         } else {

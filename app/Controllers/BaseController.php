@@ -2,6 +2,12 @@
 
 namespace App\Controllers;
 
+use App\Models\MAdmin;
+use App\Models\MKategori;
+use App\Models\MNasabah;
+use App\Models\MPenarikan;
+use App\Models\MSetoran;
+use App\Models\MTeller;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
@@ -43,15 +49,15 @@ abstract class BaseController extends Controller
      */
     protected $session;
 
-    protected $admin_model;
-    protected $teller_model;
-    protected $nasabah_model;
+    protected MAdmin $admin_model;
+    protected MTeller $teller_model;
+    protected MNasabah $nasabah_model;
 
-    protected $kategori_model;
-    protected $setoran_model;
-    protected $penarikan_model;
+    protected MKategori $kategori_model;
+    protected MSetoran $setoran_model;
+    protected MPenarikan $penarikan_model;
 
-    protected $user_role;
+    protected ?string $user_role;
     protected $logged_in_user;
 
     /**
@@ -67,8 +73,8 @@ abstract class BaseController extends Controller
         $this->teller_model = new \App\Models\MTeller();
         $this->nasabah_model = new \App\Models\MNasabah();
         $this->kategori_model = new \App\Models\MKategori();
-        $this->penarikan_model = new \App\Models\MPenarikan();
         $this->setoran_model = new \App\Models\MSetoran();
+        $this->penarikan_model = new \App\Models\MPenarikan();
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();

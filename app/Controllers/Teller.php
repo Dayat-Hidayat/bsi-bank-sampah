@@ -3,11 +3,16 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\HTTP\RequestInterface;
+use CodeIgniter\HTTP\ResponseInterface;
+use Psr\Log\LoggerInterface;
 
 class Teller extends BaseController
 {
-    public function __construct()
+    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
     {
+        parent::initController($request, $response, $logger);
+
         // cek role di session
         // jika role tidak sama dengan teller atau admin, maka
         // tampilkan halaman error 403 (404)
@@ -15,13 +20,17 @@ class Teller extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
     }
+
     public function index()
     {
-        // tampilan halaman list akun teller
+        $teller_list = $this->teller_model->findAll();
 
-        // ambil data dari database pada tabel teller
+        $data = [
+            'title' => 'Daftar Teller',
+            'teller_list' => $teller_list
+        ];
 
-        // tampilkan data ke view
+        return view('teller/index', $data);
     }
 
     public function create()
