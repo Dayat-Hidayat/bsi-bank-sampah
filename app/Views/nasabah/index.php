@@ -15,6 +15,13 @@ $session = session();
 
 <body>
     <h1>Test Ini Adalah Menu Nasabah</h1>
+    <?php foreach ($nasabah as $n) : ?>
+        <ul>
+            <li><?= $n['username']; ?></li>
+            <li><?= $n['nama_lengkap']; ?></li>
+            <li><?= $n['saldo']; ?></li>
+        </ul>
+    <?php endforeach; ?>
 </body>
 
 </html>
