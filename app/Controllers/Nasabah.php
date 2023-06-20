@@ -20,10 +20,16 @@ class Nasabah extends BaseController
     function index()
     {
         $nasabah = $this->nasabah_model->find($this->logged_in_user);
+        $setoran = $this->setoran_model->find($this->logged_in_user);
+        $kategori = $this->kategori_model->findAll();
+        $teller = $this->teller_model->findAll();
 
         $data = [
             'title' => 'Daftar Nasabah',
-            'nasabah' => $nasabah
+            'nasabah' => $nasabah,
+            'setoran' => $setoran,
+            'kategori' => $kategori,
+            'teller' => $teller
         ];
 
         return view('nasabah/index', $data);
