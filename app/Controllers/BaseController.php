@@ -9,6 +9,7 @@ use App\Models\MPenarikan;
 use App\Models\MSetoran;
 use App\Models\MTeller;
 use CodeIgniter\Controller;
+use CodeIgniter\Database\BaseConnection;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
@@ -47,8 +48,8 @@ abstract class BaseController extends Controller
      * Be sure to declare properties for any property fetch you initialized.
      * The creation of dynamic property is deprecated in PHP 8.2.
      */
-    protected $session;
-    protected $db;
+    protected \CodeIgniter\Session\Session $session;
+    protected BaseConnection $db;
 
     protected MAdmin $admin_model;
     protected MTeller $teller_model;

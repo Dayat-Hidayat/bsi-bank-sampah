@@ -24,7 +24,7 @@ class Setoran extends BaseController
         $this->setoran_model->join('teller', 'teller.id = setoran.id_teller');
         $this->setoran_model->join('nasabah', 'nasabah.id = setoran.id_nasabah');
 
-        $this->setoran_model->orderBy('tanggal_setoran', 'DESC');
+        $this->setoran_model->orderBy('tanggal_setor', 'DESC');
 
         if ($this->user_role == 'nasabah') {
             $setoran_list = $this->setoran_model->where('id_nasabah', $this->logged_in_user['id']);
@@ -49,8 +49,8 @@ class Setoran extends BaseController
         }
 
         if ($this->request->is('get')) {
-            $nasabah_list = $this->nasabah_model->findAll();
-            $teller_list = $this->teller_model->findAll();
+            $nasabah_list = $this->nasabah_model->where('is_active', 1)->findAll();
+            $teller_list = $this->teller_model->where('is_active', 1)->findAll();
             $kategori_sampah_list = $this->kategori_model->findAll();
 
             $data = [
@@ -69,8 +69,34 @@ class Setoran extends BaseController
             $id_kategori_sampah = $this->request->getPost('id_kategori_sampah');
             $berat = $this->request->getPost('berat');
 
+            $this->validateData(
+                [
+                    'id_nasabah' => $id_nasabah,
+                    'id_teller' => $id_teller,
+                    'berat' => $berat,
+                ],
+                $this->setoran_model->getValidationRules(
+                    [
+                        'only' => ['id_nasabah', 'id_teller', 'berat']
+                    ]
+                ),
+                $this->setoran_model->getValidationMessages()
+            );
+
+            if ($errors = $this->validator->getErrors()) {
+                var_dump($errors);
+                return;
+            }
+
             // Telah terjadi manipulasi form
             if ($this->user_role == 'teller' && $id_teller != $this->logged_in_user['id']) {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
+
+            $nasabah = $this->nasabah_model->find($id_nasabah);
+
+            // Jika nasabah tidak ditemukan, maka tampilkan error 404
+            if (!$nasabah || $nasabah['is_active'] == 0) {
                 throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
 
@@ -82,7 +108,9 @@ class Setoran extends BaseController
             }
 
             // Penghitungan nominal
-            $nominal = $berat * $kategori_sampah['taksiran'];
+            $nominal = floor($berat * $kategori_sampah['taksiran']);
+
+            $this->db->transBegin();
 
             $this->setoran_model->insert([
                 'id_nasabah' => $id_nasabah,
@@ -93,11 +121,23 @@ class Setoran extends BaseController
                 'nominal' => $nominal,
             ]);
 
-            $errors = $this->setoran_model->errors();
+            $this->nasabah_model->update($id_nasabah, [
+                'saldo' => $nasabah['saldo'] + $nominal,
+            ]);
 
-            if ($errors) {
-                var_dump($errors);
+            $penarikan_errors = $this->setoran_model->errors();
+            $nasabah_errors = $this->nasabah_model->errors();
+
+            if ($penarikan_errors || $nasabah_errors || $this->db->transStatus() === FALSE) {
+                $this->db->transRollback();
+
+                var_dump($penarikan_errors);
+                var_dump($nasabah_errors);
+
+                return;
             } else {
+                $this->db->transCommit();
+
                 return redirect('setoran');
             }
         } else {

@@ -54,8 +54,8 @@ class Penarikan extends BaseController
 
         if ($this->request->is('get')) {
             // tampilkan halaman form untuk menambah data penarikan baru
-            $nasabah_list = $this->nasabah_model->findAll();
-            $teller_list = $this->teller_model->findAll();
+            $nasabah_list = $this->nasabah_model->where('is_active', 1)->findAll();
+            $teller_list = $this->teller_model->where('is_active', 1)->findAll();
             $kategori_sampah_list = $this->kategori_model->findAll();
 
             $data = [
@@ -69,28 +69,56 @@ class Penarikan extends BaseController
             return view('penarikan/tambah', $data);
         } else if ($this->request->is('post')) {
             // PROSES TAMBAH DATA
-            // ambil data dari form
-
-            // validasi data
-
-            // jika data tidak valid, maka tampilkan error menggunakan flashdata
-            // dan redirect ke halaman form kembali
-
-            // jika data valid, maka simpan data ke database
-
-            // tampilkan pesan sukses menggunakan flashdata
-
-            // redirect ke halaman list
 
             // Pengambilan data dari form
             $id_nasabah = $this->request->getPost('id_nasabah');
             $id_teller = $this->request->getPost('id_teller');
             $nominal = $this->request->getPost('nominal');
 
+            // validasi data
+            $this->validateData(
+                [
+                    'id_nasabah' => $id_nasabah,
+                    'id_teller' => $id_teller,
+                    'nominal' => $nominal,
+                ],
+                $this->setoran_model->getValidationRules(
+                    [
+                        'only' => ['id_nasabah', 'id_teller', 'nominal']
+                    ]
+                ),
+                $this->setoran_model->getValidationMessages()
+            );
+
+            // jika data tidak valid, maka tampilkan error menggunakan flashdata
+            // dan redirect ke halaman form kembali
+            if ($errors = $this->validator->getErrors()) {
+                var_dump($errors);
+                return;
+            }
+
             // Telah terjadi manipulasi form
             if ($this->user_role == 'teller' && $id_teller != $this->logged_in_user['id']) {
                 throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
+
+            $nasabah = $this->nasabah_model->find($id_nasabah);
+
+            // Jika nasabah tidak ditemukan, maka tampilkan error 404
+            if (!$nasabah || $nasabah['is_active'] == 0) {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+            }
+
+            if ($nasabah['saldo'] < $nominal || $nasabah['saldo'] - $nominal < 0) {
+                // simpan pesan error ke flashdata
+                var_dump("Saldo tidak cukup");
+
+                return;
+            }
+
+
+            // jika data valid, maka simpan data ke database
+            $this->db->transBegin();
 
             $this->penarikan_model->insert([
                 'id_nasabah' => $id_nasabah,
@@ -98,11 +126,30 @@ class Penarikan extends BaseController
                 'nominal' => $nominal,
             ]);
 
-            $errors = $this->penarikan_model->errors();
+            $this->nasabah_model->update($id_nasabah, [
+                'saldo' => $nasabah['saldo'] - $nominal,
+            ]);
 
-            if ($errors) {
-                var_dump($errors);
+            $penarikan_errors = $this->penarikan_model->errors();
+            $nasabah_errors = $this->nasabah_model->errors();
+
+
+            if ($penarikan_errors || $nasabah_errors || $this->db->transStatus() === FALSE) {
+                $this->db->transRollback();
+
+                var_dump($penarikan_errors);
+                var_dump($nasabah_errors);
+
+                return;
             } else {
+                // tampilkan pesan sukses menggunakan flashdata
+
+                // redirect ke halaman list penarikan
+                $this->db->transCommit();
+
+                // simpan pesan sukses ke flashdata
+                var_dump("Penarikan berhasil");
+
                 return redirect('penarikan');
             }
         } else {
