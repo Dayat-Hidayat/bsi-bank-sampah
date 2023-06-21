@@ -19,8 +19,8 @@ class MSetoran extends Model
 
     // Validation
     protected $validationRules      = [
-        'id_nasabah'        => 'required|numeric|greater_than[0]|is_not_unique[nasabah.id]',
-        'id_teller'         => 'required|numeric|greater_than[0]|is_not_unique[teller.id]',
+        'id_nasabah'        => 'required|is_natural_no_zero|greater_than[0]|is_not_unique[nasabah.id]',
+        'id_teller'         => 'required|is_natural_no_zero|greater_than[0]|is_not_unique[teller.id]',
         'kategori_sampah'   => 'required|min_length[1]|max_length[255]',
         'taksiran'          => 'required|is_natural_no_zero|greater_than[0]',
         'berat'             => 'required|greater_than[0]',
@@ -29,13 +29,13 @@ class MSetoran extends Model
     protected $validationMessages   = [
         'id_nasabah'        => [
             'required'              => 'Nasabah wajib diisi',
-            'numeric'               => 'Nasabah harus berupa angka',
+            'is_natural_no_zero'    => 'Nasabah harus berupa angka bulat diatas 0',
             'greater_than'          => 'Nasabah harus lebih dari 0',
             'is_not_unique'         => 'Nasabah tidak ditemukan',
         ],
         'id_teller'         => [
             'required'              => 'Teller wajib diisi',
-            'numeric'               => 'Teller harus berupa angka',
+            'is_natural_no_zero'    => 'Teller harus berupa angka bulat diatas 0',
             'greater_than'          => 'Teller harus lebih dari 0',
             'is_not_unique'         => 'Teller tidak ditemukan',
         ],

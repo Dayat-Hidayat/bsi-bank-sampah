@@ -24,7 +24,7 @@ class Setoran extends BaseController
         $this->setoran_model->join('teller', 'teller.id = setoran.id_teller');
         $this->setoran_model->join('nasabah', 'nasabah.id = setoran.id_nasabah');
 
-        $this->setoran_model->orderBy('id', 'DESC');
+        $this->setoran_model->orderBy('tanggal_setoran', 'DESC');
 
         if ($this->user_role == 'nasabah') {
             $setoran_list = $this->setoran_model->where('id_nasabah', $this->logged_in_user['id']);
