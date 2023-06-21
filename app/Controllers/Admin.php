@@ -30,7 +30,7 @@ class Admin extends BaseController
         // tampilkan data ke view
     }
 
-    public function create()
+    public function tambah()
     {
         if ($this->request->is('get')) {
             // tampilkan halaman form untuk menambah data admin baru

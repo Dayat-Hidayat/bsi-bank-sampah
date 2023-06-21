@@ -48,6 +48,7 @@ abstract class BaseController extends Controller
      * The creation of dynamic property is deprecated in PHP 8.2.
      */
     protected $session;
+    protected $db;
 
     protected MAdmin $admin_model;
     protected MTeller $teller_model;
@@ -78,6 +79,7 @@ abstract class BaseController extends Controller
 
         // E.g.: $this->session = \Config\Services::session();
         $this->session = \Config\Services::session();
+        $this->db = \Config\Database::connect();
 
         $this->user_role = $this->session->get('role');
         $this->logged_in_user = $this->session->get('user');

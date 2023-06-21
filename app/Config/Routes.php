@@ -58,6 +58,19 @@ $routes->group('admin', function ($routes) {
     $routes->match(['get', 'post'], 'ubah/(:num)', 'admin::ubah');
     $routes->post('hapus/(:num)', 'admin::hapus');
 });
+$routes->group('setoran', function ($routes) {
+    $routes->get('', 'Setoran::index');
+    $routes->match(['get', 'post'], 'tambah', 'Setoran::tambah');
+    $routes->match(['get', 'post'], 'ubah/(:num)', 'Setoran::ubah');
+    $routes->post('hapus/(:num)', 'Setoran::hapus');
+});
+$routes->group('penarikan', function ($routes) {
+    $routes->get('', 'Penarikan::index');
+    $routes->match(['get', 'post'], 'tambah', 'Penarikan::tambah');
+    $routes->match(['get', 'post'], 'ubah/(:num)', 'Penarikan::ubah');
+    $routes->post('hapus/(:num)', 'Penarikan::hapus');
+});
+$routes->get('error/(:num)', 'Error::error/$1');
 
 /*
  * --------------------------------------------------------------------

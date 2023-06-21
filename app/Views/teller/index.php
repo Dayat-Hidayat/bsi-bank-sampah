@@ -9,21 +9,34 @@ $session = session();
 <?= $this->section('content'); ?>
 
 <div class="container">
-    <h1>Test Ini Adalah Menu Akun Teller</h1>
-    <table>
-        <tr>
-            <th>Username</th>
-            <th>Nama Lengkap</th>
-            <th>Saldo</th>
-        </tr>
+    <h1>Menu Akun Teller</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">No.</th>
+                <th scope="col">Username</th>
+                <th scope="col">Nama Lengkap</th>
+                <th scope="col">Nomor Telepon</th>
+                <th scope="col">Tanggal Daftar</th>
+                <th scope="col">Terakhir Login</th>
+                <th scope="col">Is Active</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($teller_list as $index => $teller) : ?>
+                <tr>
+                    <td scope="row"><?= $index + 1 ?></td>
+                    <td scope="row"><?= $teller['username']; ?></td>
+                    <td scope="row"><?= $teller['nama_lengkap']; ?></td>
+                    <td scope="row"><?= $teller['nomor_telepon']; ?></td>
+                    <td scope="row"><?= $teller['tanggal_daftar']; ?></td>
+                    <td scope="row"><?= $teller['terakhir_login']; ?></td>
+                    <td scope="row"><?= $teller['is_active'] ? 'Aktif' : 'Nonaktif' ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
     </table>
-    <?php foreach ($teller_list as $teller) : ?>
-        <ul>
-            <li><?= $n['username']; ?></li>
-            <li><?= $n['nama_lengkap']; ?></li>
-            <li><?= $n['saldo']; ?></li>
-        </ul>
-    <?php endforeach; ?>
+
 </div>
 
 <?= $this->endSection(); ?>

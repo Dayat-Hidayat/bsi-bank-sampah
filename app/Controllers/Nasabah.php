@@ -17,18 +17,17 @@ class Nasabah extends BaseController
         // jika role tidak sama dengan nasabah, maka
         // tampilkan halaman error 403 (404)
         // if ($this->user_role != 'nasabah') {
-        // throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        // return redirect('auth');
+        //     throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         // }
     }
 
     function index()
     {
-        $nasabah = $this->nasabah_model->find($this->logged_in_user);
+        $nasabah_list = $this->nasabah_model->findAll();
 
         $data = [
             'title' => 'Daftar Nasabah',
-            'nasabah' => $nasabah
+            'nasabah_list' => $nasabah_list
         ];
 
         return view('nasabah/index', $data);

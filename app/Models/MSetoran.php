@@ -22,21 +22,59 @@ class MSetoran extends Model
         'id_nasabah'        => 'required|numeric|greater_than[0]|is_not_unique[nasabah.id]',
         'id_teller'         => 'required|numeric|greater_than[0]|is_not_unique[teller.id]',
         'kategori_sampah'   => 'required|min_length[1]|max_length[255]',
-        'taksiran'          => 'required|is_natural|greater_than0]',
+        'taksiran'          => 'required|is_natural_no_zero|greater_than[0]',
         'berat'             => 'required|greater_than[0]',
-        'nominal'           => 'required|is_natural|greater_than[0]',
+        'nominal'           => 'required|greater_than[0]',
     ];
-    protected $validationMessages   = [];
-    protected $skipValidation       = false;
-    protected $cleanValidationRules = true;
+    protected $validationMessages   = [
+        'id_nasabah'        => [
+            'required'              => 'Nasabah wajib diisi',
+            'numeric'               => 'Nasabah harus berupa angka',
+            'greater_than'          => 'Nasabah harus lebih dari 0',
+            'is_not_unique'         => 'Nasabah tidak ditemukan',
+        ],
+        'id_teller'         => [
+            'required'              => 'Teller wajib diisi',
+            'numeric'               => 'Teller harus berupa angka',
+            'greater_than'          => 'Teller harus lebih dari 0',
+            'is_not_unique'         => 'Teller tidak ditemukan',
+        ],
+        'kategori_sampah'   => [
+            'required'              => 'Kategori sampah wajib diisi',
+            'min_length'            => 'Kategori sampah minimal 1 karakter',
+            'max_length'            => 'Kategori sampah maksimal 255 karakter',
+        ],
+        'taksiran'          => [
+            'required'              => 'Taksiran wajib diisi',
+            'is_natural_no_zero'    => 'Taksiran harus berupa angka',
+            'greater_than'          => 'Taksiran minimal 0',
+        ],
+        'berat'             => [
+            'required'              => 'Berat wajib diisi',
+            'greater_than'          => 'Berat minimal 0',
+        ],
+        'nominal'           => [
+            'required'              => 'Nominal wajib diisi',
+            'greater_than'          => 'Nominal minimal 0',
+        ],
+    ];
 
     // Callbacks
-    protected $beforeInsert   = ['cb_insert_tanggal_penarikan'];
+    protected $beforeInsert   = ['cb_insert_tanggal_setor', 'cb_bulat_kebawah_nominal'];
+    protected $beforeUpdate   = ['cb_bulat_kebawah_nominal'];
 
-    public function cb_insert_tanggal_penarikan(array $data)
+    public function cb_insert_tanggal_setor(array $data)
     {
-        $data['data']['tanggal_penarikan'] = date('Y-m-d H:i:s');
+        $data['data']['tanggal_setor'] = date('Y-m-d H:i:s');
 
+        return $data;
+    }
+
+    public function cb_bulat_kebawah_nominal(array $data)
+    {
+        if (isset($data['data']['nominal'])) {
+            $data['data']['nominal'] = floor($data['data']['nominal']);
+        }
         return $data;
     }
 }

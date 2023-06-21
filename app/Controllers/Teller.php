@@ -16,14 +16,19 @@ class Teller extends BaseController
         // cek role di session
         // jika role tidak sama dengan teller atau admin, maka
         // tampilkan halaman error 403 (404)
-        if ($this->user_role != 'teller' && $this->user_role != 'admin') {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
+        // if ($this->user_role != 'teller' && $this->user_role != 'admin') {
+        //     throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        // }
     }
 
     public function index()
     {
+        if ($this->user_role != "admin") {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         $teller_list = $this->teller_model->findAll();
+        $this->teller_model->join('user', 'user.id = teller.id_user');
 
         $data = [
             'title' => 'Daftar Teller',
@@ -33,7 +38,7 @@ class Teller extends BaseController
         return view('teller/index', $data);
     }
 
-    public function create()
+    public function tambah()
     {
         if ($this->user_role != "admin") {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();

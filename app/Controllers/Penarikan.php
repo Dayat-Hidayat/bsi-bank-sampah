@@ -25,7 +25,7 @@ class Penarikan extends BaseController
         // tampilkan data ke view
     }
 
-    public function create()
+    public function tambah()
     {
         if ($this->user_role != 'teller' && $this->user_role != 'nasabah') {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
