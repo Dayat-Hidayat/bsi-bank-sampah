@@ -14,8 +14,6 @@ class Home extends BaseController
         //     'name_lengkap' => 'asd'
         // ]);
 
-        var_dump($this->admin_model->errors());
-
         return view('welcome_message');
     }
 }

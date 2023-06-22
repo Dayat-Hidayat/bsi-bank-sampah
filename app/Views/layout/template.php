@@ -15,6 +15,8 @@
 
     <?= $this->include('layout/navbar'); ?>
 
+    <?= $this->include('layout/message'); ?>
+
     <?= $this->renderSection('content'); ?>
 
     <?= $this->renderSection('script'); ?>

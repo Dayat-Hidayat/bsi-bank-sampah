@@ -93,8 +93,9 @@ class Penarikan extends BaseController
             // jika data tidak valid, maka tampilkan error menggunakan flashdata
             // dan redirect ke halaman form kembali
             if ($errors = $this->validator->getErrors()) {
-                var_dump($errors);
-                return;
+                $this->session->setFlashdata('error_list', $errors);
+
+                return redirect()->back();
             }
 
             // Telah terjadi manipulasi form
@@ -111,9 +112,9 @@ class Penarikan extends BaseController
 
             if ($nasabah['saldo'] < $nominal || $nasabah['saldo'] - $nominal < 0) {
                 // simpan pesan error ke flashdata
-                var_dump("Saldo tidak cukup");
+                $this->session->setFlashdata('error_list', ['nominal' => 'Saldo tidak cukup']);
 
-                return;
+                return redirect()->back();
             }
 
 
@@ -137,10 +138,9 @@ class Penarikan extends BaseController
             if ($penarikan_errors || $nasabah_errors || $this->db->transStatus() === FALSE) {
                 $this->db->transRollback();
 
-                var_dump($penarikan_errors);
-                var_dump($nasabah_errors);
+                $this->session->setFlashdata('error_list', array_merge($penarikan_errors, $nasabah_errors));
 
-                return;
+                return redirect()->back();
             } else {
                 // tampilkan pesan sukses menggunakan flashdata
 
@@ -148,9 +148,9 @@ class Penarikan extends BaseController
                 $this->db->transCommit();
 
                 // simpan pesan sukses ke flashdata
-                var_dump("Penarikan berhasil");
+                $this->session->setFlashdata('sukses_list', ['penarikan' => 'Data berhasil ditambahkan']);
 
-                return redirect('penarikan');
+                return redirect()->to('penarikan');
             }
         } else {
             // jika bukan get atau post, maka tampilkan error 404

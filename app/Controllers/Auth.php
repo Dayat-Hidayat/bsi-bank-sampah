@@ -46,14 +46,18 @@ class Auth extends BaseController
                     $this->session->set('user', $user);
                     $this->session->set('role', $role);
 
-                    return redirect($role);
+                    $this->session->setFlashdata('sukses_list', ['login' => 'Anda berhasil login']);
+
+                    return redirect()->to((string) $role);
                 } else {
-                    $this->session->setFlashdata('error', 'Password salah');
-                    return redirect('auth/login');
+                    $this->session->setFlashdata('error_list', ['password' => 'Password salah']);
+
+                    return redirect()->back();
                 }
             } else {
-                $this->session->setFlashdata('error', 'Username tidak ditemukan');
-                return redirect('auth/login');
+                $this->session->setFlashdata('error_list', ['username' => 'Username tidak ditemukan']);
+
+                return redirect()->back();
             }
         } else {
             // jika bukan get atau post, maka tampilkan error 404
@@ -65,9 +69,9 @@ class Auth extends BaseController
     {
         // hapus data user dari session
         $this->session->destroy();
-        $this->session->setFlashdata('success', 'Anda berhasil logout');
+        $this->session->setFlashdata('success_list', 'Anda berhasil logout');
 
         // redirect ke halaman login
-        return redirect('auth/login');
+        return redirect()->to('auth/login');
     }
 }

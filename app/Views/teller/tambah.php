@@ -1,11 +1,3 @@
-<?php
-
-$session = session();
-$role = $session->get('role');
-$logged_in_user = $session->get('user');
-
-?>
-
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('content'); ?>

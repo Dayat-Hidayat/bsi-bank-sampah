@@ -83,18 +83,17 @@ class Teller extends BaseController
             // jika data tidak valid, maka tampilkan error menggunakan flashdata
             // dan redirect ke halaman form kembali
             if ($errors = $this->validator->getErrors()) {
-                var_dump($errors);
-                return;
-                // session()->setFlashdata('error', $errors);
-                // return redirect()->back();
+                $this->session->setFlashdata('error_list', $errors);
+
+                return redirect()->back();
             }
 
             // validasi data
             if ($password != $konfirmasi_password) {
-                var_dump('Password dan konfirmasi password tidak sama');
-                return;
-                // session()->setFlashdata('errors', 'Password dan konfirmasi password tidak sama');
-                // return redirect()->back();
+                $this->session->setFlashdata([
+                    'error_list' => ['password' => 'Password dan konfirmasi password tidak sama']
+                ]);
+                return redirect()->back();
             }
 
             // jika data valid, maka simpan data ke database
@@ -108,15 +107,14 @@ class Teller extends BaseController
             ]);
 
             if ($errors = $this->teller_model->errors()) {
-                var_dump($errors);
-                return;
-                // session()->setFlashdata('error', $this->teller_model->errors());
-                // return redirect()->back();
+                $this->session->setFlashdata('error_list', $errors);
+
+                return redirect()->back();
             } else {
-                session()->setFlashdata('success', 'Berhasil menambahkan teller baru');
-                return redirect()->to(base_url('teller'));
+                $this->session->setFlashdata('sukses_list', ['pesan' => 'Teller berhasil ditambah']);
+
+                return redirect()->to('teller');
             }
-            // tampilkan pesan sukses menggunakan flashdata
 
             // redirect ke halaman list
         } else {
@@ -180,10 +178,15 @@ class Teller extends BaseController
             );
 
             if ($errors = $this->validator->getErrors()) {
-                var_dump($errors);
-                return;
-                // session()->setFlashdata('error', $errors);
-                // return redirect()->back();
+                $this->session->setFlashdata('error_list', $errors);
+
+                return redirect()->back();
+            }
+
+            $teller = $this->teller_model->find($id);
+
+            if (!$teller) {
+                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
 
             $this->teller_model->update($id, [
@@ -194,13 +197,16 @@ class Teller extends BaseController
             ]);
 
             if ($errors = $this->teller_model->errors()) {
-                var_dump($errors);
-                return;
-                // session()->setFlashdata('error', $this->teller_model->errors());
-                // return redirect()->back();
+                $this->session->setFlashdata('error_list', $errors);
+
+                return redirect()->back();
             } else {
-                session()->setFlashdata('success', 'Berhasil mengubah data teller');
-                return redirect()->to(base_url('teller'));
+                $this->session->setFlashdata(
+                    'sukses_list',
+                    ['teller' => join(' ', ['Teller', $teller['nama_lengkap'], 'berhasil diubah'])]
+                );
+
+                return redirect()->to('teller');
             }
         } else {
             // jika bukan get atau post, maka tampilkan error 404
@@ -227,10 +233,9 @@ class Teller extends BaseController
         );
 
         if ($errors = $this->validator->getErrors()) {
-            var_dump($errors);
-            return;
-            // session()->setFlashdata('error', $errors);
-            // return redirect()->back();
+            $this->session->setFlashdata('error_list', $errors);
+
+            return redirect()->back();
         }
 
         $teller = $this->teller_model->find($id);
@@ -240,32 +245,29 @@ class Teller extends BaseController
         }
 
         if ($password_baru != $konfirmasi_password_baru) {
-            var_dump('Password baru dan konfirmasi password baru tidak sama');
-            return;
-            // session()->setFlashdata('error', 'Password baru dan konfirmasi password baru tidak sama');
-            // return redirect()->back();
+            $this->session->setFlashdata('error_list', ['password' => 'Password baru dan konfirmasi password baru tidak sama']);
+
+            return redirect()->back();
         }
 
         if (!password_verify((string) $password_lama, $teller['password'])) {
-            var_dump('Password lama tidak sesuai');
-            return;
-            // session()->setFlashdata('error', 'Password lama tidak sesuai');
-            // return redirect()->back();
+            $this->session->setFlashdata('error_list', ['password' => 'Password lama salah']);
+
+            return redirect()->back();
         }
 
         $this->teller_model->update($id, [
             'password' => $password_baru,
         ]);
 
-        $errors = $this->teller_model->errors();
-        if ($errors) {
-            var_dump($errors);
-            return;
-            // session()->setFlashdata('error', $this->teller_model->errors());
-            // return redirect()->back();
+        if ($errors = $this->teller_model->errors()) {
+            $this->session->setFlashdata('error_list', $errors);
+
+            return redirect()->back();
         } else {
-            session()->setFlashdata('success', 'Berhasil mengubah password');
-            return redirect()->to(base_url('teller'));
+            $this->session->setFlashdata('sukses_list', ['password' => 'Password berhasil diubah']);
+
+            return redirect()->to('teller');
         }
     }
 

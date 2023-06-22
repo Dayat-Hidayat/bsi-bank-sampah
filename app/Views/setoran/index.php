@@ -1,9 +1,3 @@
-<?php
-
-$session = session();
-
-?>
-
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('content'); ?>

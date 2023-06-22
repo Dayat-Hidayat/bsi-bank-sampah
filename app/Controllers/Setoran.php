@@ -84,8 +84,9 @@ class Setoran extends BaseController
             );
 
             if ($errors = $this->validator->getErrors()) {
-                var_dump($errors);
-                return;
+                $this->session->setFlashdata('error_list', $errors);
+
+                return redirect()->back();
             }
 
             // Telah terjadi manipulasi form
@@ -131,14 +132,15 @@ class Setoran extends BaseController
             if ($penarikan_errors || $nasabah_errors || $this->db->transStatus() === FALSE) {
                 $this->db->transRollback();
 
-                var_dump($penarikan_errors);
-                var_dump($nasabah_errors);
+                $this->session->setFlashdata('error_list', array_merge($penarikan_errors, $nasabah_errors));
 
-                return;
+                return redirect()->back();
             } else {
                 $this->db->transCommit();
 
-                return redirect('setoran');
+                $this->session->setFlashdata('sukses_list', ['pesan' => 'Setoran berhasil ditambahkan']);
+
+                return redirect()->to('setoran');
             }
         } else {
             // jika bukan get atau post, maka tampilkan error 404
