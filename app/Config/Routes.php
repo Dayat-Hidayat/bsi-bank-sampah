@@ -43,25 +43,26 @@ $routes->group('kategori', function ($routes) {
 $routes->group('nasabah', function ($routes) {
     $routes->get('', 'Nasabah::index');
     $routes->match(['get', 'post'], 'tambah', 'Nasabah::tambah');
-    $routes->match(['get', 'post'], 'ubah/(:num)', 'Nasabah::ubah');
+    $routes->match(['get', 'post'], 'ubah/(:num)', 'Nasabah::ubah/$1');
     $routes->post('hapus/(:num)', 'Nasabah::hapus');
 });
 $routes->group('teller', function ($routes) {
     $routes->get('', 'Teller::index');
     $routes->match(['get', 'post'], 'tambah', 'Teller::tambah');
-    $routes->match(['get', 'post'], 'ubah/(:num)', 'Teller::ubah');
+    $routes->match(['get', 'post'], 'ubah/(:num)', 'Teller::ubah/$1');
+    $routes->post('ubah/(:num)/ganti-password', 'Teller::ganti_password/$1');
     $routes->post('hapus/(:num)', 'Teller::hapus');
 });
 $routes->group('admin', function ($routes) {
     $routes->get('', 'admin::index');
     $routes->match(['get', 'post'], 'tambah', 'admin::tambah');
-    $routes->match(['get', 'post'], 'ubah/(:num)', 'admin::ubah');
+    $routes->match(['get', 'post'], 'ubah/(:num)', 'admin::ubah/$1');
     $routes->post('hapus/(:num)', 'admin::hapus');
 });
 $routes->group('setoran', function ($routes) {
     $routes->get('', 'Setoran::index');
     $routes->match(['get', 'post'], 'tambah', 'Setoran::tambah');
-    $routes->match(['get', 'post'], 'ubah/(:num)', 'Setoran::ubah');
+    $routes->match(['get', 'post'], 'ubah/(:num)', 'Setoran::ubah/$1');
     $routes->post('hapus/(:num)', 'Setoran::hapus');
 });
 $routes->group('penarikan', function ($routes) {
