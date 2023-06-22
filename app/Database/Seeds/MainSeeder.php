@@ -38,7 +38,8 @@ class MainSeeder extends Seeder
             ]
         ];
 
-        for ($i = 0; $i < 10; $i++) {
+        // Ubah Faker Jadi 4 dari 10, Biar gak kebanyakan data. Pusing liatnya!!
+        for ($i = 0; $i < 4; $i++) {
             $tanggal = $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format);
             $username = $faker->userName;
             $nama_lengkap = $faker->name();
@@ -65,7 +66,6 @@ class MainSeeder extends Seeder
         // Reset array index
         $teller = array_values($teller);
 
-
         $nasabah = [
             [
                 'username' => 'nasabah',
@@ -77,11 +77,13 @@ class MainSeeder extends Seeder
                 'saldo' => 0,
                 'tanggal_daftar' => $tanggal,
                 'terakhir_login' => $tanggal,
+                // Nasabah Akun Kenapa pakai faker ? Kalo dapet is_active 0 nanti kan gak bisa login
                 'is_active' => $faker->boolean(85),
             ]
         ];
 
-        for ($i = 0; $i < 30; $i++) {
+        // Ubah Faker Jadi 4 dari 25, Biar gak kebanyakan data. Pusing liatnya!!
+        for ($i = 0; $i < 4; $i++) {
             $tanggal = $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format);
 
             $username = $faker->userName;
@@ -133,7 +135,9 @@ class MainSeeder extends Seeder
             $kategori[] = [
                 'nama' => $kategori_yang_ada[$i],
                 'taksiran' => $faker->numberBetween(1000, 10000),
-                'stok' => $faker->randomFloat(2, 0, 30),
+                // Kenapa Stok Pake Float ??
+                // Ubah Jadi number dari randomFloat(2, 0, 10)
+                'stok' => $faker->numberBetween(10, 50),
                 'terakhir_diperbarui' => $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format),
             ];
         }
@@ -143,7 +147,7 @@ class MainSeeder extends Seeder
 
         for ($i = 0; $i < count($nasabah); $i++) {
 
-            $jumlah_setoran = $faker->numberBetween(0, 15);
+            $jumlah_setoran = $faker->numberBetween(0, 5);
             $jumlah_penarikan = $faker->numberBetween(0, $jumlah_setoran);
 
             for ($j = 0; $j < $jumlah_setoran; $j++) {
@@ -152,7 +156,8 @@ class MainSeeder extends Seeder
                 $index_kategori_sampah = $faker->numberBetween(1, count($kategori) - 1);
                 $kategori_sampah = $kategori[$index_kategori_sampah]['nama'];
                 $taksiran = $kategori[$index_kategori_sampah]['taksiran'];
-                $berat = $faker->randomFloat(2, 0, 10);
+                // Ubah jadi number dari randomFloat(2, 0, 10)
+                $berat = $faker->numberBetween(5, 20);
                 $nominal = floor($berat * $taksiran);
                 $tanggal_setor = $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format);
 
