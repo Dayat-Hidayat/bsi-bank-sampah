@@ -3,9 +3,9 @@
 <?= $this->section('content'); ?>
 
 <div class="container">
-    <h1>Menu Akun Teller</h1>
-    <table class="table">
-        <thead>
+    <h1>Menu Akun Teller <?= $username_login; ?></h1>
+    <table class="table align-middle">
+        <thead class="align-middle">
             <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Username</th>

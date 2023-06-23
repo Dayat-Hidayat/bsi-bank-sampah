@@ -25,13 +25,20 @@ class Nasabah extends BaseController
     {
         // Ini Bisa
         $nasabah_list = $this->nasabah_model->where('id', $this->logged_in_user['id'])->findAll();
+        // $username_login = $this->nasabah_model->where('id', $this->logged_in_user['username'])->findAll();
+
+
+        // $username_login = $this->nasabah_model->get_where('username', $this->logged_in_user['id'])->row_array();
+        $username_login = $this->nasabah_model->where('username', $this->logged_in_user['id'])->findAll();
+        // $username_login = 'test';
 
         // Tapi Kalo Ini Ada Bug yang mana nasabah selalu muncul di setiap login
         // $nasabah_list = $this->nasabah_model->find($this->logged_in_user);
 
         $data = [
             'title' => 'Daftar Nasabah',
-            'nasabah_list' => $nasabah_list
+            'nasabah_list' => $nasabah_list,
+            'username_login' => $username_login
         ];
 
         return view('nasabah/index', $data);
