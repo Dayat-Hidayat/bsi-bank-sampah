@@ -10,8 +10,8 @@ $session = session();
 
 <div class="container">
     <h1>Test Ini Adalah Menu Akun Nasabah</h1>
-    <table class="table">
-        <thead>
+    <table class="table align-middle">
+        <thead class="align-middle">
             <tr>
                 <th scope="col">No.</th>
                 <th scope="col">Username</th>
@@ -21,7 +21,7 @@ $session = session();
                 <th scope="col">Tanggal Daftar</th>
                 <th scope="col">Terakhir Login</th>
                 <th scope="col">Saldo</th>
-                <th scope="col">Is Active</th>
+                <th scope="col">Status Akun</th>
             </tr>
         </thead>
         <tbody>

@@ -23,7 +23,11 @@ class Nasabah extends BaseController
 
     function index()
     {
-        $nasabah_list = $this->nasabah_model->findAll();
+        // Ini Bisa
+        $nasabah_list = $this->nasabah_model->where('id', $this->logged_in_user['id'])->findAll();
+
+        // Tapi Kalo Ini Ada Bug yang mana nasabah selalu muncul di setiap login
+        // $nasabah_list = $this->nasabah_model->find($this->logged_in_user);
 
         $data = [
             'title' => 'Daftar Nasabah',

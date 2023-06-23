@@ -8,8 +8,8 @@
         <thead>
             <tr>
                 <th scope="col">No.</th>
-                <th scope="col">Nasabah</th>
-                <th scope="col">Teller</th>
+                <th scope="col">Nama Nasabah</th>
+                <th scope="col">Nama Teller</th>
                 <th scope="col">Kategori Sampah</th>
                 <th scope="col">Taksiran</th>
                 <th scope="col">Berat</th>
