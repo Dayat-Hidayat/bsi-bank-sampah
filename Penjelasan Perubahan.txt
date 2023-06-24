@@ -1,0 +1,11 @@
+Penjelasan Perubahan Update 1.0
+
+1. Mengubah semua Order tanggal_setor / tanggal_penarikan menjadi ASC -> Sebelumnya DESC
+
+2. Menambah helper number di autoload, Jadi gak usah deklarasi di setiap component/list
+
+3. Mengubah table, Sekarang bisa hover
+
+4. Autofocus on username textfield, Sekarang otomatis masuk ke username
+
+NOTE : Penarikan dan setoran -> tidak bisa diubah dan dihapus

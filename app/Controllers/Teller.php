@@ -12,7 +12,7 @@ class Teller extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        $this->teller_model->orderBy('tanggal_daftar', 'DESC');
+        $this->teller_model->orderBy('tanggal_daftar', 'ASC');
         $teller_list = $this->teller_model->findAll();
 
         $data = [

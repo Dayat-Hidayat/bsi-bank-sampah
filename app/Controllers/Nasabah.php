@@ -12,7 +12,7 @@ class Nasabah extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        $this->nasabah_model->orderBy('tanggal_daftar', 'DESC');
+        $this->nasabah_model->orderBy('tanggal_daftar', 'ASC');
         $nasabah_list = $this->nasabah_model->findAll();
 
         $data = [

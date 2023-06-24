@@ -24,7 +24,7 @@ class Penarikan extends BaseController
         $this->penarikan_model->join('teller', 'teller.id = penarikan.id_teller', 'left');
         $this->penarikan_model->join('nasabah', 'nasabah.id = penarikan.id_nasabah', 'left');
 
-        $this->penarikan_model->orderBy('tanggal_penarikan', 'DESC');
+        $this->penarikan_model->orderBy('tanggal_penarikan', 'ASC');
 
         if ($this->user_role == 'nasabah') {
             $penarikan_list = $this->penarikan_model->where('id_nasabah', $this->logged_in_user['id']);

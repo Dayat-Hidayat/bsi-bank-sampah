@@ -1,6 +1,5 @@
 <?php
 
-helper('number');
 $session = session();
 $role = $session->get('role');
 
@@ -15,8 +14,8 @@ $role = $session->get('role');
     </h3>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table">
-                <thead>
+            <table class="table table-hover">
+                <thead class="align-middle">
                     <tr>
                         <th scope="col">#</th>
                         <?php if (in_array($role, ['admin', 'teller'])) : ?>
@@ -31,6 +30,7 @@ $role = $session->get('role');
                         <th scope="col">Tanggal Daftar</th>
                         <th scope="col">Terakhir Login</th>
                         <th scope="col">Is Active</th>
+                        <th scope="col">Pilihan</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,6 +49,10 @@ $role = $session->get('role');
                             <td><?= $nasabah['tanggal_daftar']; ?></td>
                             <td><?= $nasabah['terakhir_login']; ?></td>
                             <td><?= $nasabah['is_active'] ? 'Aktif' : 'Nonaktif'; ?></td>
+                            <td>
+                                <a href="<?= base_url('nasabah/ubah/') . $nasabah['id']; ?>" class="btn btn-outline-warning">Ubah</a>
+                                <a href="<?= base_url('nasabah/hapus/') . $nasabah['id']; ?>" onclick="return confirm('Kamu yakin akan menghapus <?= $title . ' ' . $nasabah['nama_lengkap']; ?> ?');" class="btn btn-outline-danger">Hapus</a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

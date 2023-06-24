@@ -1,6 +1,5 @@
 <?php
 
-helper('number');
 $session = session();
 $role = $session->get('role');
 
@@ -15,8 +14,8 @@ $role = $session->get('role');
     </h3>
     <div class="card-body">
         <div class="table-responsive">
-            <table class="table">
-                <thead>
+            <table class="table table-hover">
+                <thead class="align-middle">
                     <tr>
                         <th scope="col">#</th>
                         <?php if (in_array($role, ['admin', 'teller'])) : ?>
@@ -29,6 +28,7 @@ $role = $session->get('role');
                             <th scope="col">Stok (kg)</th>
                         <?php endif; ?>
                         <th scope="col">Terakhir Diperbarui</th>
+                        <th scope="col">Pilihan</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,6 +45,10 @@ $role = $session->get('role');
                                 <td><?= $kategori['stok']; ?></td>
                             <?php endif; ?>
                             <td><?= $kategori['terakhir_diperbarui']; ?></td>
+                            <td>
+                                <a href="<?= base_url('kategori/ubah/') . $kategori['id']; ?>" class="btn btn-outline-warning">Ubah</a>
+                                <a href="<?= base_url('kategori/hapus/') . $kategori['id']; ?>" onclick="return confirm('Kamu yakin akan menghapus <?= $title . ' ' . $kategori['nama']; ?> ?');" class="btn btn-outline-danger">Hapus</a>
+                            </td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
