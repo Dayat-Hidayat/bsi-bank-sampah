@@ -15,9 +15,11 @@
 
     <?= $this->include('layout/navbar'); ?>
 
-    <?= $this->include('layout/message'); ?>
+    <div class="my-4">
+        <?= $this->include('layout/message'); ?>
 
-    <?= $this->renderSection('content'); ?>
+        <?= $this->renderSection('content'); ?>
+    </div>
 
     <?= $this->renderSection('script'); ?>
 

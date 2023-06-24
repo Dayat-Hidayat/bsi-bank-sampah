@@ -51,7 +51,7 @@ class Auth extends BaseController
 
                     $this->session->setFlashdata('sukses_list', ['login' => 'Anda berhasil login']);
 
-                    return redirect()->to((string) $role);
+                    return redirect()->to('');
                 } else {
                     $this->session->setFlashdata('error_list', ['password' => 'Password salah']);
 
@@ -72,7 +72,7 @@ class Auth extends BaseController
     {
         // hapus data user dari session
         $this->session->destroy();
-        $this->session->setFlashdata('success_list', 'Anda berhasil logout');
+        $this->session->setFlashdata('sukses_list', ['logout' => 'Anda berhasil logout']);
 
         // redirect ke halaman login
         return redirect()->to('auth/login');
