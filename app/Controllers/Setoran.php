@@ -17,8 +17,8 @@ class Setoran extends BaseController
         // jika role teller atau user, maka tampilkan data setoran yang memiliki id teller atau user tersebut
 
         $this->setoran_model->select('setoran.*, teller.nama_lengkap as teller_nama_lengkap, nasabah.nama_lengkap as nasabah_nama_lengkap');
-        $this->setoran_model->join('teller', 'teller.id = setoran.id_teller');
-        $this->setoran_model->join('nasabah', 'nasabah.id = setoran.id_nasabah');
+        $this->setoran_model->join('teller', 'teller.id = setoran.id_teller', 'left');
+        $this->setoran_model->join('nasabah', 'nasabah.id = setoran.id_nasabah', 'left');
 
         $this->setoran_model->orderBy('tanggal_setor', 'DESC');
 

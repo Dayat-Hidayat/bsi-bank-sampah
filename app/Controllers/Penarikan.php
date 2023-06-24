@@ -21,8 +21,8 @@ class Penarikan extends BaseController
         // tampilkan data ke view
 
         $this->penarikan_model->select('penarikan.*, teller.nama_lengkap as teller_nama_lengkap, nasabah.nama_lengkap as nasabah_nama_lengkap');
-        $this->penarikan_model->join('teller', 'teller.id = penarikan.id_teller');
-        $this->penarikan_model->join('nasabah', 'nasabah.id = penarikan.id_nasabah');
+        $this->penarikan_model->join('teller', 'teller.id = penarikan.id_teller', 'left');
+        $this->penarikan_model->join('nasabah', 'nasabah.id = penarikan.id_nasabah', 'left');
 
         $this->penarikan_model->orderBy('tanggal_penarikan', 'DESC');
 

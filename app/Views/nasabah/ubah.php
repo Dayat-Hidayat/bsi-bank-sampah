@@ -79,6 +79,41 @@ $user = $session->get('user');
             </form>
         </div>
     </div>
+
+    <?php if ($role == 'admin') : ?>
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title text-center py-4">
+                    <b>HAPUS AKUN</b>
+                </h4>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger w-100" data-bs-toggle="modal" data-bs-target="#hapus">
+                    HAPUS AKUN INI
+                </button>
+            </div>
+        </div>
+    <?php endif; ?>
 </div>
+
+<?php if ($role == 'admin') : ?>
+
+    <!-- Modal -->
+    <div class="modal fade" id="hapus" tabindex="-1" aria-labelledby="hapusLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="hapusLabel">Apa Anda Yakin?</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <form action="<?= base_url('nasasbah/hapus/' . $teller['id']) ?>" method="POST">
+                        <button class="btn btn-danger w-100">Ya, Hapus Akun Ini</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>
 
 <?= $this->endSection(); ?>

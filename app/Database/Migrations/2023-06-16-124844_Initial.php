@@ -173,10 +173,12 @@ class Initial extends Migration
             'id_nasabah' => [
                 'type' => 'INT',
                 'constraint' => 11,
+                'null' => true,
             ],
             'id_teller' => [
                 'type' => 'INT',
                 'constraint' => 11,
+                'null' => true,
             ],
             'kategori_sampah' => [
                 'type' => 'VARCHAR',
@@ -200,8 +202,8 @@ class Initial extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('id_nasabah', 'nasabah', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('id_teller', 'teller', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('id_nasabah', 'nasabah', 'id', 'SET NULL', 'SET NULL');
+        $this->forge->addForeignKey('id_teller', 'teller', 'id', 'SET NULL', 'SET NULL');
         $this->forge->createTable('setoran');
 
         // Table Penarikan
@@ -214,10 +216,12 @@ class Initial extends Migration
             'id_nasabah' => [
                 'type' => 'INT',
                 'constraint' => 11,
+                'null' => true,
             ],
             'id_teller' => [
                 'type' => 'INT',
                 'constraint' => 11,
+                'null' => true,
             ],
             'nominal' => [
                 'type' => 'INT',
@@ -229,8 +233,8 @@ class Initial extends Migration
             ],
         ]);
         $this->forge->addKey('id', true);
-        $this->forge->addForeignKey('id_nasabah', 'nasabah', 'id', 'CASCADE', 'CASCADE');
-        $this->forge->addForeignKey('id_teller', 'teller', 'id', 'CASCADE', 'CASCADE');
+        $this->forge->addForeignKey('id_nasabah', 'nasabah', 'id', 'SET NULL', 'SET NULL');
+        $this->forge->addForeignKey('id_teller', 'teller', 'id', 'SET NULL', 'SET NULL');
         $this->forge->createTable('penarikan');
     }
 

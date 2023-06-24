@@ -36,10 +36,10 @@ $role = $session->get('role');
                             <th scope="row"><?= $i + 1 ?></th>
                             <td><?= $penarikan['id']; ?></td>
                             <?php if (in_array($role, ['admin', 'teller'])) : ?>
-                                <td><?= $penarikan['nasabah_nama_lengkap']; ?></td>
+                                <td><?= $penarikan['nasabah_nama_lengkap'] ?? 'NULL'; ?></td>
                             <?php endif; ?>
                             <?php if (in_array($role, ['admin', 'nasabah'])) : ?>
-                                <td><?= $penarikan['teller_nama_lengkap']; ?></td>
+                                <td><?= $penarikan['teller_nama_lengkap'] ?? 'NULL'; ?></td>
                             <?php endif; ?>
                             <td><?= number_to_currency($penarikan['nominal'], 'IDR', 'id_ID'); ?></td>
                             <td><?= $penarikan['tanggal_penarikan']; ?></td>

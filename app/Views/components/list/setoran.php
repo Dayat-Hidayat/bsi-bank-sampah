@@ -39,10 +39,10 @@ $role = $session->get('role');
                             <th scope="row"><?= $i + 1 ?></th>
                             <td><?= $setoran['id']; ?></td>
                             <?php if (in_array($role, ['admin', 'teller'])) : ?>
-                                <td><?= $setoran['nasabah_nama_lengkap']; ?></td>
+                                <td><?= $setoran['nasabah_nama_lengkap'] ?? 'NULL'; ?></td>
                             <?php endif; ?>
                             <?php if (in_array($role, ['admin', 'nasabah'])) : ?>
-                                <td><?= $setoran['teller_nama_lengkap']; ?></td>
+                                <td><?= $setoran['teller_nama_lengkap'] ?? 'NULL'; ?></td>
                             <?php endif; ?>
                             <td><?= $setoran['kategori_sampah']; ?></td>
                             <td><?= $setoran['berat']; ?></td>
