@@ -32,8 +32,12 @@ class Auth extends BaseController
                 $user = $this->admin_model->where('username', $username)->first();
             } else if ($role == 'teller') {
                 $user = $this->teller_model->where('username', $username)->first();
-            } else {
+            } else if ($role == 'nasabah') {
                 $user = $this->nasabah_model->where('username', $username)->first();
+            } else {
+                $this->session->setFlashdata('error_list', ['role' => 'Role tidak ditemukan']);
+
+                return redirect()->back();
             }
 
             if ($user) {
@@ -67,6 +71,6 @@ class Auth extends BaseController
         $this->session->setFlashdata('sukses_list', ['logout' => 'Anda berhasil logout']);
 
         // redirect ke halaman login
-        return redirect()->to('auth/login');
+        return redirect()->to('');
     }
 }
