@@ -8,6 +8,10 @@ class Auth extends BaseController
 {
     public function login()
     {
+        if ($this->logged_in_user) {
+            return redirect()->to('');
+        }
+
         if ($this->request->is('get')) {
             // tampilkan halaman login
             $data = [

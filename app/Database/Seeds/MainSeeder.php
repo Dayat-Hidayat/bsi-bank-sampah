@@ -155,8 +155,8 @@ class MainSeeder extends Seeder
                 $index_kategori_sampah = $faker->numberBetween(1, count($kategori) - 1);
                 $kategori_sampah = $kategori[$index_kategori_sampah]['nama'];
                 $taksiran = $kategori[$index_kategori_sampah]['taksiran'];
-                // Ubah jadi number dari randomFloat(2, 0, 10)
-                $berat = $faker->numberBetween(5, 20);
+
+                $berat = $faker->randomFloat(2, 0, 10);
                 $nominal = floor($berat * $taksiran);
                 $tanggal_setor = $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format);
 

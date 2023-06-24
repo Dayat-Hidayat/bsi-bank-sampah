@@ -29,7 +29,7 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::index');
+$routes->get('/', 'Dashboard::index');
 $routes->group('auth', function ($routes) {
     $routes->get('', 'Auth::login');
     $routes->match(['get', 'post'], 'login', 'Auth::login');
@@ -55,25 +55,16 @@ $routes->group('teller', function ($routes) {
     $routes->post('ubah/(:num)/ganti-password', 'Teller::ganti_password/$1');
     $routes->post('hapus/(:num)', 'Teller::hapus/$1');
 });
-$routes->group('admin', function ($routes) {
-    $routes->get('', 'admin::index');
-    $routes->match(['get', 'post'], 'tambah', 'admin::tambah');
-    $routes->match(['get', 'post'], 'ubah/(:num)', 'admin::ubah/$1');
-    $routes->post('hapus/(:num)', 'admin::hapus/$1');
-});
 $routes->group('setoran', function ($routes) {
     $routes->get('', 'Setoran::index');
     $routes->match(['get', 'post'], 'tambah', 'Setoran::tambah');
-    $routes->match(['get', 'post'], 'ubah/(:num)', 'Setoran::ubah/$1');
     $routes->post('hapus/(:num)', 'Setoran::hapus/$1');
 });
 $routes->group('penarikan', function ($routes) {
     $routes->get('', 'Penarikan::index');
     $routes->match(['get', 'post'], 'tambah', 'Penarikan::tambah');
-    $routes->match(['get', 'post'], 'ubah/(:num)', 'Penarikan::ubah/$1');
     $routes->post('hapus/(:num)', 'Penarikan::hapus/$1');
 });
-$routes->get('error/(:num)', 'Error::error/$1');
 
 /*
  * --------------------------------------------------------------------
