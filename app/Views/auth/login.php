@@ -7,7 +7,7 @@ $session = session();
 <?= $this->extend('layout/template'); ?>
 
 <?= $this->section('content'); ?>
-<div class="container centered">
+<div class="container position-absolute top-50 start-50 translate-middle">
     <form action="<?= base_url('auth/login') ?>" method="POST">
         <input type="text" name="username">
         <input type="password" name="password">
