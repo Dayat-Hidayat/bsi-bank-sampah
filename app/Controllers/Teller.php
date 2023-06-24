@@ -3,24 +3,9 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 class Teller extends BaseController
 {
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
-        parent::initController($request, $response, $logger);
-
-        // cek role di session
-        // jika role tidak sama dengan teller atau admin, maka
-        // tampilkan halaman error 403 (404)
-        // if ($this->user_role != 'teller' && $this->user_role != 'admin') {
-        //     throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        // }
-    }
-
     public function index()
     {
         if ($this->user_role != "admin") {
@@ -125,14 +110,6 @@ class Teller extends BaseController
 
     public function ubah(int $id)
     {
-        // ambil data dari database pada table teller berdasarkan id
-        $teller = $this->teller_model->find($id);
-
-        // jika data tidak ditemukan, maka tampilkan error 404
-        if (!$teller) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
-
         // Jika role bukan admin dan bukan teller yang bersangkutan, maka
         // tampilkan halaman error 403 (404)
         if (
@@ -140,6 +117,14 @@ class Teller extends BaseController
                 || ($this->user_role == 'teller' && $this->logged_in_user['id'] == $id)
             )
         ) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        // ambil data dari database pada table teller berdasarkan id
+        $teller = $this->teller_model->find($id);
+
+        // jika data tidak ditemukan, maka tampilkan error 404
+        if (!$teller) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
@@ -210,6 +195,14 @@ class Teller extends BaseController
 
     public function ganti_password(int $id)
     {
+        if (
+            !($this->user_role == 'admin'
+                || ($this->user_role == 'teller' && $this->logged_in_user['id'] == $id)
+            )
+        ) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         $password_lama = $this->request->getPost('password_lama');
         $password_baru = $this->request->getPost('password_baru');
         $konfirmasi_password_baru = $this->request->getPost('konfirmasi_password_baru');
@@ -268,19 +261,19 @@ class Teller extends BaseController
 
     public function hapus(int $id)
     {
-        // ambil data dari database pada table teller berdasarkan id
-        $teller = $this->teller_model->find($id);
-
-        // jika data tidak ditemukan, maka tampilkan error 404
-        if (!$teller) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
-
         // Jika role bukan admin dan bukan teller yang bersangkutan, maka
         // tampilkan halaman error 403 (404)
         if (
             !$this->user_role == 'admin'
         ) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
+        // ambil data dari database pada table teller berdasarkan id
+        $teller = $this->teller_model->find($id);
+
+        // jika data tidak ditemukan, maka tampilkan error 404
+        if (!$teller) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 

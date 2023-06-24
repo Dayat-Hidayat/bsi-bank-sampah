@@ -3,23 +3,9 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 class Kategori extends BaseController
 {
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
-        parent::initController($request, $response, $logger);
-        // cek role di session
-        // jika role tidak sama dengan admin, maka
-        // tampilkan halaman error 403 (404)
-        if ($this->user_role != 'admin') {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
-    }
-
     public function index()
     {
         // ambil data dari database pada tabel kategori
@@ -37,6 +23,10 @@ class Kategori extends BaseController
 
     public function tambah()
     {
+        if (!($this->user_role == 'admin')) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         if ($this->request->is('get')) {
             // tampilkan halaman form untuk menambah data kategori baru
             $kategori_list = $this->kategori_model->findAll();
@@ -100,6 +90,10 @@ class Kategori extends BaseController
 
     public function ubah(int $id)
     {
+        if (!($this->user_role == 'admin')) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         $kategori = $this->kategori_model->find($id);
 
         if (!$kategori) {
@@ -172,7 +166,9 @@ class Kategori extends BaseController
 
     public function hapus(int $id)
     {
-        // PROSES HAPUS DATA
+        if ($this->user_role != 'admin') {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
 
         // ambil data dari database pada table kategori berdasarkan id
         $kategori = $this->kategori_model->find($id);

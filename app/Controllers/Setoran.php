@@ -3,19 +3,15 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 class Setoran extends BaseController
 {
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
-        parent::initController($request, $response, $logger);
-    }
-
     public function index()
     {
+        if (!$this->user_role) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         // tampilan halaman list setoran
         // jika role admin, maka tampilkan semua data setoran
         // jika role teller atau user, maka tampilkan data setoran yang memiliki id teller atau user tersebut
@@ -44,7 +40,7 @@ class Setoran extends BaseController
 
     public function tambah()
     {
-        if ($this->user_role != 'teller' && $this->user_role != 'nasabah') {
+        if (!in_array($this->user_role, ['teller', 'admin'])) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 

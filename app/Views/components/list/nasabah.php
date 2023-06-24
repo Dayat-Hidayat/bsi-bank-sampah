@@ -9,7 +9,7 @@ $role = $session->get('role');
 <div class="card">
     <h3 class="card-header">
         Nasabah
-        <?php if ($role != 'nasabah') : ?>
+        <?php if (!in_array($role, ['admin', 'teller'])) : ?>
             <a href="<?= base_url('nasabah/tambah') ?>" class="btn btn-primary">Tambah</a>
         <?php endif; ?>
     </h3>
@@ -19,7 +19,7 @@ $role = $session->get('role');
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <?php if ($role == 'admin' || $role == 'teller') : ?>
+                        <?php if (in_array($role, ['admin', 'teller'])) : ?>
                             <th scope="col">ID</th>
                         <?php endif; ?>
                         <th scope="col">Username</th>
@@ -37,7 +37,7 @@ $role = $session->get('role');
                     <?php foreach ($nasabah_list as $i => $nasabah) : ?>
                         <tr>
                             <th scope="row"><?= $i + 1 ?></th>
-                            <?php if ($role == 'admin' || $role == 'teller') : ?>
+                            <?php if (in_array($role, ['admin', 'teller'])) : ?>
                                 <td><?= $nasabah['id']; ?></td>
                             <?php endif; ?>
                             <td><?= $nasabah['username']; ?></td>

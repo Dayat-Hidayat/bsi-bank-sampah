@@ -19,10 +19,13 @@ $role = $session->get('role');
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <?php if (in_array($role, ['admin', 'teller'])) : ?>
+                            <th scope="col">ID</th>
+                        <?php endif; ?>
                         <th scope="col">Nama</th>
                         <th scope="col">Deskripsi</th>
                         <th scope="col">Taksiran (Kg)</th>
-                        <?php if ($role == 'teller' || $role == 'admin') : ?>
+                        <?php if (in_array($role, ['admin', 'teller'])) : ?>
                             <th scope="col">Stok (kg)</th>
                         <?php endif; ?>
                         <th scope="col">Terakhir Diperbarui</th>
@@ -32,10 +35,13 @@ $role = $session->get('role');
                     <?php foreach ($kategori_list as $i => $kategori) : ?>
                         <tr>
                             <th scope="row"><?= $i + 1 ?></th>
+                            <?php if (in_array($role, ['admin', 'teller'])) : ?>
+                                <td><?= $kategori['id']; ?></td>
+                            <?php endif; ?>
                             <td><?= $kategori['nama']; ?></td>
                             <td><?= $kategori['deskripsi']; ?></td>
                             <td><?= number_to_currency($kategori['taksiran'], 'IDR', 'id_ID'); ?></td>
-                            <?php if ($role == 'teller' || $role == 'admin') : ?>
+                            <?php if (in_array($role, ['admin', 'teller'])) : ?>
                                 <td><?= $kategori['stok']; ?></td>
                             <?php endif; ?>
                             <td><?= $kategori['terakhir_diperbarui']; ?></td>

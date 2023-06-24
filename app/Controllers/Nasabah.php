@@ -3,27 +3,12 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 class Nasabah extends BaseController
 {
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
-        parent::initController($request, $response, $logger);
-
-        // cek role di session
-        // jika role tidak sama dengan nasabah, maka
-        // tampilkan halaman error 403 (404)
-        // if ($this->user_role != 'nasabah') {
-        //     throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        // }
-    }
-
     function index()
     {
-        if ($this->user_role == "nasabah") {
+        if (!in_array($this->user_role, ['admin', 'teller'])) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
@@ -40,7 +25,7 @@ class Nasabah extends BaseController
 
     function tambah()
     {
-        if (!in_array($this->user_role, ['admin', 'nasabah'])) {
+        if (!in_array($this->user_role, ['admin', 'teller'])) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
@@ -124,20 +109,18 @@ class Nasabah extends BaseController
 
     public function ubah(int $id)
     {
+        if (
+            !in_array($this->user_role, ['admin', 'teller'])
+            || !($this->user_role == 'nasabah' && $this->logged_in_user['id'] == $id)
+        ) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         // ambil data dari database pada table nasabah berdasarkan id
         $nasabah = $this->nasabah_model->find($id);
 
         // jika data tidak ditemukan, maka tampilkan error 404
         if (!$nasabah) {
-            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-        }
-
-        // Jika role bukan admin dan bukan nasabah yang bersangkutan, maka
-        // tampilkan halaman error 403 (404)
-        if (
-            !in_array($this->user_role, ['admin', 'nasabah'])
-            || !($this->user_role == 'nasabah' && $this->logged_in_user['id'] == $id)
-        ) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
@@ -212,6 +195,13 @@ class Nasabah extends BaseController
 
     public function ganti_password(int $id)
     {
+        if (
+            !in_array($this->user_role, ['admin', 'nasabah'])
+            || !($this->user_role == 'nasabah' && $this->logged_in_user['id'] == $id)
+        ) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         $password_lama = $this->request->getPost('password_lama');
         $password_baru = $this->request->getPost('password_baru');
         $konfirmasi_password_baru = $this->request->getPost('konfirmasi_password_baru');
@@ -270,6 +260,12 @@ class Nasabah extends BaseController
 
     public function hapus(int $id)
     {
+        if (
+            !$this->user_role == "admin"
+        ) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         // ambil data dari database pada table nasabah berdasarkan id
         $nasabah = $this->nasabah_model->find($id);
 

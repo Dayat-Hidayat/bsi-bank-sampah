@@ -9,7 +9,7 @@ $role = $session->get('role');
 <div class="card">
     <h3 class="card-header">
         Penarikan
-        <?php if ($role != 'nasabah') : ?>
+        <?php if (in_array($role, ['admin', 'teller'])) : ?>
             <a href="<?= base_url('penarikan/tambah') ?>" class="btn btn-primary">Tambah</a>
         <?php endif; ?>
     </h3>
@@ -19,10 +19,11 @@ $role = $session->get('role');
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <?php if ($role == 'teller' || $role == 'admin') : ?>
+                        <?php if (in_array($role, ['admin', 'teller'])) : ?>
+                            <th scope="col">ID</th>
                             <th scope="col">Nasabah</th>
                         <?php endif; ?>
-                        <?php if ($role == 'nasabah' || $role == 'admin') : ?>
+                        <?php if (in_array($role, ['admin', 'nasabah'])) : ?>
                             <th scope="col">Teller</th>
                         <?php endif; ?>
                         <th scope="col">Nominal</th>
@@ -33,10 +34,11 @@ $role = $session->get('role');
                     <?php foreach ($penarikan_list as $i => $penarikan) : ?>
                         <tr>
                             <th scope="row"><?= $i + 1 ?></th>
-                            <?php if ($role == 'teller' || $role == 'admin') : ?>
+                            <?php if (in_array($role, ['admin', 'teller'])) : ?>
+                                <td><?= $penarikan['id']; ?></td>
                                 <td><?= $penarikan['nasabah_nama_lengkap']; ?></td>
                             <?php endif; ?>
-                            <?php if ($role == 'nasabah' || $role == 'admin') : ?>
+                            <?php if (in_array($role, ['admin', 'nasabah'])) : ?>
                                 <td><?= $penarikan['teller_nama_lengkap']; ?></td>
                             <?php endif; ?>
                             <td><?= number_to_currency($penarikan['nominal'], 'IDR', 'id_ID'); ?></td>

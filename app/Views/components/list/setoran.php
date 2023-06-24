@@ -9,7 +9,7 @@ $role = $session->get('role');
 <div class="card">
     <h3 class="card-header">
         Setoran
-        <?php if ($role != 'nasabah') : ?>
+        <?php if (in_array($role, ['admin', 'teller'])) : ?>
             <a href="<?= base_url('setoran/tambah') ?>" class="btn btn-primary">Tambah</a>
         <?php endif; ?>
     </h3>
@@ -19,10 +19,11 @@ $role = $session->get('role');
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <?php if ($role == 'teller' || $role == 'admin') : ?>
+                        <?php if (in_array($role, ['admin', 'teller'])) : ?>
+                            <th scope="col">ID</th>
                             <th scope="col">Nasabah</th>
                         <?php endif; ?>
-                        <?php if ($role == 'nasabah' || $role == 'admin') : ?>
+                        <?php if (in_array($role, ['admin', 'nasabah'])) : ?>
                             <th scope="col">Teller</th>
                         <?php endif; ?>
                         <th scope="col">Kategori Sampah</th>
@@ -36,10 +37,11 @@ $role = $session->get('role');
                     <?php foreach ($setoran_list as $i => $setoran) : ?>
                         <tr>
                             <th scope="row"><?= $i + 1 ?></th>
-                            <?php if ($role == 'teller' || $role == 'admin') : ?>
+                            <?php if (in_array($role, ['admin', 'teller'])) : ?>
+                                <td><?= $setoran['id']; ?></td>
                                 <td><?= $setoran['nasabah_nama_lengkap']; ?></td>
                             <?php endif; ?>
-                            <?php if ($role == 'nasabah' || $role == 'admin') : ?>
+                            <?php if (in_array($role, ['admin', 'nasabah'])) : ?>
                                 <td><?= $setoran['teller_nama_lengkap']; ?></td>
                             <?php endif; ?>
                             <td><?= $setoran['kategori_sampah']; ?></td>

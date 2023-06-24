@@ -18,8 +18,12 @@ $role = $session->get('role');
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <?php if (in_array($role, ['admin', 'teller'])) : ?>
+                            <th scope="col">ID</th>
+                        <?php endif; ?>
                         <th scope="col">Username</th>
                         <th scope="col">Nama Lengkap</th>
+                        <th scope="col">Alamat</th>
                         <th scope="col">Nomor Telepon</th>
                         <th scope="col">Email</th>
                         <th scope="col">Tanggal Daftar</th>
@@ -31,8 +35,12 @@ $role = $session->get('role');
                     <?php foreach ($teller_list as $i => $teller) : ?>
                         <tr>
                             <th scope="row"><?= $i + 1 ?></th>
+                            <?php if (in_array($role, ['admin', 'teller'])) : ?>
+                                <td><?= $teller['id']; ?></td>
+                            <?php endif; ?>
                             <td><?= $teller['username']; ?></td>
                             <td><?= $teller['nama_lengkap']; ?></td>
+                            <td><?= $teller['alamat']; ?></td>
                             <td><?= $teller['nomor_telepon']; ?></td>
                             <td><?= $teller['email']; ?></td>
                             <td><?= $teller['tanggal_daftar']; ?></td>
