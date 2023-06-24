@@ -21,7 +21,7 @@ class Home extends BaseController
 
     public function dashboard_umum()
     {
-        $this->kategori_model->orderBy('taksiran', 'DESC');
+        $this->kategori_model->orderBy('terakhir_diperbarui', 'DESC');
         $kategori_list = $this->kategori_model->findAll();
 
         $data = [
@@ -46,7 +46,7 @@ class Home extends BaseController
         $this->penarikan_model->where('id_nasabah', $this->logged_in_user['id']);
         $penarikan_list = $this->penarikan_model->where('id_nasabah', $this->logged_in_user['id'])->findAll(5);
 
-        $this->kategori_model->orderBy('taksiran', 'DESC');
+        $this->kategori_model->orderBy('terakhir_diperbarui', 'DESC');
         $kategori_list = $this->kategori_model->findAll(5);
 
         $statistik = [];
@@ -79,6 +79,7 @@ class Home extends BaseController
 
     public function dashboard_teller()
     {
+        $this->nasabah_model->orderBy('tanggal_daftar', 'DESC');
         $nasabah_list = $this->nasabah_model->findAll(5);
 
         $this->setoran_model->select('setoran.*, nasabah.nama_lengkap as nasabah_nama_lengkap');
@@ -94,6 +95,7 @@ class Home extends BaseController
         $this->penarikan_model->where('id_teller', $this->logged_in_user['id']);
         $penarikan_list = $this->penarikan_model->findAll(5);
 
+        $this->kategori_model->orderBy('terakhir_diperbarui', 'DESC');
         $kategori_list = $this->kategori_model->findAll(5);
 
         $statistik = [];
@@ -122,7 +124,10 @@ class Home extends BaseController
 
     public function dashboard_admin()
     {
+        $this->nasabah_model->orderBy('tanggal_daftar', 'DESC');
         $nasabah_list = $this->nasabah_model->findAll(5);
+
+        $this->teller_model->orderBy('tanggal_daftar', 'DESC');
         $teller_list = $this->teller_model->findAll(5);
 
         $this->setoran_model->select('setoran.*, teller.nama_lengkap as teller_nama_lengkap, nasabah.nama_lengkap as nasabah_nama_lengkap');

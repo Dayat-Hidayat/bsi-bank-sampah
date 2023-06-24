@@ -9,6 +9,7 @@ class Kategori extends BaseController
     public function index()
     {
         // ambil data dari database pada tabel kategori
+        $this->kategori_model->orderBy('nama', 'ASC');
         $kategori_list = $this->kategori_model->findAll();
 
         $data = [
@@ -29,11 +30,9 @@ class Kategori extends BaseController
 
         if ($this->request->is('get')) {
             // tampilkan halaman form untuk menambah data kategori baru
-            $kategori_list = $this->kategori_model->findAll();
 
             $data = [
                 'title' => 'Tambah Kategori Baru',
-                'kategori_list' => $kategori_list,
             ];
 
             return view('kategori/tambah', $data);

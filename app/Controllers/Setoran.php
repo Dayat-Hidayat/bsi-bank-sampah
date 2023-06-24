@@ -45,8 +45,13 @@ class Setoran extends BaseController
         }
 
         if ($this->request->is('get')) {
+            $this->nasabah_model->orderBy('nama_lengkap', 'ASC');
             $nasabah_list = $this->nasabah_model->where('is_active', 1)->findAll();
+
+            $this->teller_model->orderBy('nama_lengkap', 'ASC');
             $teller_list = $this->teller_model->where('is_active', 1)->findAll();
+
+            $this->kategori_model->orderBy('nama', 'ASC');
             $kategori_sampah_list = $this->kategori_model->findAll();
 
             $data = [
