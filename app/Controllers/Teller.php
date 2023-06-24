@@ -27,8 +27,8 @@ class Teller extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
+        $this->teller_model->orderBy('tanggal_daftar', 'DESC');
         $teller_list = $this->teller_model->findAll();
-        $this->teller_model->join('user', 'user.id = teller.id_user');
 
         $data = [
             'title' => 'List Teller',
@@ -238,17 +238,18 @@ class Teller extends BaseController
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
+        if (!password_verify((string) $password_lama, $teller['password'])) {
+            $this->session->setFlashdata('error_list', ['password' => 'Password lama salah']);
+
+            return redirect()->back();
+        }
+
         if ($password_baru != $konfirmasi_password_baru) {
             $this->session->setFlashdata('error_list', ['password' => 'Password baru dan konfirmasi password baru tidak sama']);
 
             return redirect()->back();
         }
 
-        if (!password_verify((string) $password_lama, $teller['password'])) {
-            $this->session->setFlashdata('error_list', ['password' => 'Password lama salah']);
-
-            return redirect()->back();
-        }
 
         $this->teller_model->update($id, [
             'password' => $password_baru,
@@ -267,21 +268,35 @@ class Teller extends BaseController
 
     public function hapus(int $id)
     {
-        // Jika role bukan admin, maka
-        // tampilkan halaman error 403 (404)
-        if ($this->user_role != 'admin') {
+        // ambil data dari database pada table teller berdasarkan id
+        $teller = $this->teller_model->find($id);
+
+        // jika data tidak ditemukan, maka tampilkan error 404
+        if (!$teller) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
-        // PROSES HAPUS DATA
-        // ambil data dari database pada table teller berdasarkan id
+        // Jika role bukan admin dan bukan teller yang bersangkutan, maka
+        // tampilkan halaman error 403 (404)
+        if (
+            !$this->user_role == 'admin'
+        ) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
 
-        // jika data tidak ditemukan, maka tampilkan error 404
+        $this->teller_model->delete($id);
 
-        // jika data ditemukan, maka hapus data dari database
+        if ($errors = $this->teller_model->errors()) {
+            $this->session->setFlashdata('error_list', $errors);
 
-        // tampilkan pesan sukses menggunakan flashdata
+            return redirect()->back();
+        } else {
+            $this->session->setFlashdata(
+                'sukses_list',
+                ['teller' => join(' ', ['Teller', $teller['nama_lengkap'], 'berhasil dihapus'])]
+            );
 
-        // redirect ke halaman list
+            return redirect()->to('teller');
+        }
     }
 }

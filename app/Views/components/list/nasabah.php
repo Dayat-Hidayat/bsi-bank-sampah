@@ -19,6 +19,9 @@ $role = $session->get('role');
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <?php if ($role == 'admin' || $role == 'teller') : ?>
+                            <th scope="col">ID</th>
+                        <?php endif; ?>
                         <th scope="col">Username</th>
                         <th scope="col">Nama Lengkap</th>
                         <th scope="col">Alamat</th>
@@ -34,6 +37,9 @@ $role = $session->get('role');
                     <?php foreach ($nasabah_list as $i => $nasabah) : ?>
                         <tr>
                             <th scope="row"><?= $i + 1 ?></th>
+                            <?php if ($role == 'admin' || $role == 'teller') : ?>
+                                <td><?= $nasabah['id']; ?></td>
+                            <?php endif; ?>
                             <td><?= $nasabah['username']; ?></td>
                             <td><?= $nasabah['nama_lengkap']; ?></td>
                             <td><?= $nasabah['alamat']; ?></td>
