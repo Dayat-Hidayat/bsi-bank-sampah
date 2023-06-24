@@ -9,8 +9,8 @@ $role = $session->get('role');
 <div class="card">
     <h3 class="card-header">
         Nasabah
-        <?php if (!in_array($role, ['admin', 'teller'])) : ?>
-            <a href="<?= base_url('nasabah/tambah') ?>" class="btn btn-primary">Tambah</a>
+        <?php if (in_array($role, ['admin', 'teller'])) : ?>
+            <a href="<?= base_url('nasabah/tambah') ?>" class="btn btn-sm btn-primary">Tambah</a>
         <?php endif; ?>
     </h3>
     <div class="card-body">
