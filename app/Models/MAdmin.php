@@ -8,7 +8,6 @@ class MAdmin extends BaseUserModel
     protected $allowedFields    = [
         'username',
         'password',
-        'nama_lengkap',
         'terakhir_login'
     ];
 
@@ -17,7 +16,6 @@ class MAdmin extends BaseUserModel
         'id'            => 'permit_empty|is_natural_no_zero',
         'username'      => 'required|alpha_dash|min_length[5]|max_length[255]|is_unique[admin.username,id,{id}]',
         'password'      => 'required|min_length[5]|max_length[255]',
-        'nama_lengkap'  => 'required|min_length[1]|max_length[255]',
     ];
     protected $validationMessages   = [
         'id'            => [
@@ -34,11 +32,6 @@ class MAdmin extends BaseUserModel
             'required'      => 'Password wajib diisi',
             'min_length'    => 'Password minimal 5 karakter',
             'max_length'    => 'Password maksimal 255 karakter',
-        ],
-        'nama_lengkap'  => [
-            'required'      => 'Nama lengkap wajib diisi',
-            'min_length'    => 'Nama lengkap minimal 1 karakter',
-            'max_length'    => 'Nama lengkap maksimal 255 karakter',
         ],
     ];
 

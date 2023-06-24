@@ -24,10 +24,6 @@ class Initial extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => 255,
             ],
-            'nama_lengkap' => [
-                'type' => 'VARCHAR',
-                'constraint' => 255,
-            ],
             'terakhir_login' => [
                 'type' => 'DATETIME',
                 'null' => true,
@@ -55,6 +51,10 @@ class Initial extends Migration
             'nama_lengkap' => [
                 'type' => 'VARCHAR',
                 'constraint' => 255,
+            ],
+            'alamat' => [
+                'type' => 'TEXT',
+                'null' => true,
             ],
             'nomor_telepon' => [
                 'type' => 'VARCHAR',
