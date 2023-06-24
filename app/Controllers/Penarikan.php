@@ -59,7 +59,7 @@ class Penarikan extends BaseController
             $kategori_sampah_list = $this->kategori_model->findAll();
 
             $data = [
-                'title' => 'Tambah Setoran',
+                'title' => 'Tambah Penarikan Baru',
                 'nasabah_list' => $nasabah_list,
                 'teller_list' => $teller_list,
                 'kategori_sampah_list' => $kategori_sampah_list,

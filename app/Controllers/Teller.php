@@ -31,7 +31,7 @@ class Teller extends BaseController
         $this->teller_model->join('user', 'user.id = teller.id_user');
 
         $data = [
-            'title' => 'Daftar Teller',
+            'title' => 'List Teller',
             'teller_list' => $teller_list
         ];
 
@@ -46,7 +46,7 @@ class Teller extends BaseController
 
         if ($this->request->is('get')) {
             $data = [
-                'title' => 'Ubah Teller',
+                'title' => 'Tambah Teller Baru',
             ];
             // tampilkan halaman form untuk menambah data teller baru
             return view('teller/tambah', $data);
@@ -125,6 +125,14 @@ class Teller extends BaseController
 
     public function ubah(int $id)
     {
+        // ambil data dari database pada table teller berdasarkan id
+        $teller = $this->teller_model->find($id);
+
+        // jika data tidak ditemukan, maka tampilkan error 404
+        if (!$teller) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         // Jika role bukan admin dan bukan teller yang bersangkutan, maka
         // tampilkan halaman error 403 (404)
         if (
@@ -136,14 +144,6 @@ class Teller extends BaseController
         }
 
         if ($this->request->is('get')) {
-            // ambil data dari database pada table teller berdasarkan id
-            $teller = $this->teller_model->find($id);
-
-            // jika data tidak ditemukan, maka tampilkan error 404
-            if (!$teller) {
-                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
-            }
-
             $data = [
                 'title' => 'Ubah Teller',
                 'teller' => $teller,
@@ -181,12 +181,6 @@ class Teller extends BaseController
                 $this->session->setFlashdata('error_list', $errors);
 
                 return redirect()->back();
-            }
-
-            $teller = $this->teller_model->find($id);
-
-            if (!$teller) {
-                throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
             }
 
             $this->teller_model->update($id, [

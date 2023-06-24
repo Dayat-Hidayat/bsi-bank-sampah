@@ -52,7 +52,7 @@ $logged_in_user = $session->get('user');
             <input type="number" name="berat" step="0.01">
             <span>kg</span>
         </label>
-        <button>TAMBAH</button>
+        <button>TAMBAH SETORAN BARU</button>
     </form>
 </div>
 

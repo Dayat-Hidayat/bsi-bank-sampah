@@ -3,7 +3,7 @@
 <?= $this->section('content'); ?>
 
 <div class="container">
-    <h1>Menambahkan Teller Baru</h1>
+    <h1>Buat Teller Baru</h1>
     <form method="POST" action="<?= base_url('teller/tambah') ?>" class="row">
         <label>
             <span>Username</span>
@@ -29,7 +29,7 @@
             <span>Nomor Telepon</span>
             <input type="text" name="nomor_telepon">
         </label>
-        <button>TAMBAH</button>
+        <button>TAMBAH TELLER BARU</button>
     </form>
 </div>
 

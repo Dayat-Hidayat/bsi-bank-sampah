@@ -54,7 +54,7 @@ class Setoran extends BaseController
             $kategori_sampah_list = $this->kategori_model->findAll();
 
             $data = [
-                'title' => 'Tambah Setoran',
+                'title' => 'Tambah Setoran Baru',
                 'nasabah_list' => $nasabah_list,
                 'teller_list' => $teller_list,
                 'kategori_sampah_list' => $kategori_sampah_list,
@@ -122,17 +122,22 @@ class Setoran extends BaseController
                 'nominal' => $nominal,
             ]);
 
+            $this->kategori_model->update($id_kategori_sampah, [
+                'stok' => $kategori_sampah['stok'] + $berat,
+            ]);
+
             $this->nasabah_model->update($id_nasabah, [
                 'saldo' => $nasabah['saldo'] + $nominal,
             ]);
 
             $penarikan_errors = $this->setoran_model->errors();
+            $kategori_errors = $this->kategori_model->errors();
             $nasabah_errors = $this->nasabah_model->errors();
 
-            if ($penarikan_errors || $nasabah_errors || $this->db->transStatus() === FALSE) {
+            if ($penarikan_errors || $kategori_errors || $nasabah_errors || $this->db->transStatus() === FALSE) {
                 $this->db->transRollback();
 
-                $this->session->setFlashdata('error_list', array_merge($penarikan_errors, $nasabah_errors));
+                $this->session->setFlashdata('error_list', array_merge($penarikan_errors, $kategori_errors, $nasabah_errors));
 
                 return redirect()->back();
             } else {

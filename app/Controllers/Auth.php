@@ -18,7 +18,10 @@ class Auth extends BaseController
     {
         if ($this->request->is('get')) {
             // tampilkan halaman login
-            return view('auth/login');
+            $data = [
+                'title' => 'Login',
+            ];
+            return view('auth/login', $data);
         } else if ($this->request->is('post')) {
             // PROSES LOGIN
 
