@@ -8,14 +8,14 @@ Bank Sampah adalah sebuah sistem penyimpanan sampah dengan cara kita setor sampa
 
 - [XAMPP](https://www.apachefriends.org/download.html) XAMPP Versi 7.4 atau diatasnya
 - [intl](http://php.net/manual/en/intl.requirements.php) Aktifkan intl pada XAMPP -> Apache -> Config -> PHP (php.ini) -> Cari ;extension=intl -> Hapus titik koma di awal lalu save
-
-- [Git](https://git-scm.com/)
 - [Composer](https://getcomposer.org/)
 
-Lalu ketik ini di terminal
+## Instalasi
 
-- git clone https://github.com/Dayat-Hidayat/bsi-bank-sampah.git
-- composer update && composer install
-- php spark migrate && php spark db:seed MainSeeder
-- php spark serve
-- http://localhost:8080
+1. Download atau clone repository ini
+2. Buka terminal atau cmd
+3. Masuk ke direktori project
+4. `composer update && composer install` untuk menginstall dependencies
+5. `php spark migrate && php spark db:seed MainSeeder` untuk membuat database dan mengisi data awal
+6. Jalankan server dengan `php spark serve`
+7. Buka browser dan masuk ke http://localhost:8080

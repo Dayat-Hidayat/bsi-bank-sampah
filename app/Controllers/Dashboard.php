@@ -2,7 +2,9 @@
 
 namespace App\Controllers;
 
-class Home extends BaseController
+use CodeIgniter\I18n\Time;
+
+class Dashboard extends BaseController
 {
     public function index()
     {
@@ -19,7 +21,7 @@ class Home extends BaseController
 
     public function dashboard_umum()
     {
-        $this->kategori_model->orderBy('taksiran', 'DESC');
+        $this->kategori_model->orderBy('terakhir_diperbarui', 'DESC');
         $kategori_list = $this->kategori_model->findAll();
 
         $data = [
@@ -44,11 +46,29 @@ class Home extends BaseController
         $this->penarikan_model->where('id_nasabah', $this->logged_in_user['id']);
         $penarikan_list = $this->penarikan_model->where('id_nasabah', $this->logged_in_user['id'])->findAll(5);
 
-        $this->kategori_model->orderBy('taksiran', 'DESC');
+        $this->kategori_model->orderBy('terakhir_diperbarui', 'DESC');
         $kategori_list = $this->kategori_model->findAll(5);
+
+        $statistik = [];
+
+        $satu_bulan_yang_lalu = Time::now()->subMonths(1);
+
+        $statistik['saldo'] = $this->logged_in_user['saldo'];
+
+        $this->setoran_model->where('tanggal_setor >=', $satu_bulan_yang_lalu);
+        $this->setoran_model->where('id_nasabah', $this->logged_in_user['id']);
+        $statistik['pendapatan'] = $this->setoran_model->selectSum('nominal')->first()['nominal'];
+
+        $this->setoran_model->where('tanggal_setor >=', $satu_bulan_yang_lalu);
+        $this->setoran_model->where('id_nasabah', $this->logged_in_user['id']);
+        $statistik['setoran'] = $this->setoran_model->countAllResults();
+
+        $this->setoran_model->where('tanggal_setor >=', $satu_bulan_yang_lalu);
+        $statistik['berat'] = number_format($this->setoran_model->selectSum('berat')->first()['berat'], 2);
 
         $data = [
             'title' => 'Dashboard Nasabah',
+            'statistik' => $statistik,
             'setoran_list' => $setoran_list,
             'penarikan_list' => $penarikan_list,
             'kategori_list' => $kategori_list,
@@ -59,6 +79,7 @@ class Home extends BaseController
 
     public function dashboard_teller()
     {
+        $this->nasabah_model->orderBy('tanggal_daftar', 'DESC');
         $nasabah_list = $this->nasabah_model->findAll(5);
 
         $this->setoran_model->select('setoran.*, nasabah.nama_lengkap as nasabah_nama_lengkap');
@@ -74,8 +95,25 @@ class Home extends BaseController
         $this->penarikan_model->where('id_teller', $this->logged_in_user['id']);
         $penarikan_list = $this->penarikan_model->findAll(5);
 
+        $this->kategori_model->orderBy('terakhir_diperbarui', 'DESC');
+        $kategori_list = $this->kategori_model->findAll(5);
+
+        $statistik = [];
+
+        $satu_bulan_yang_lalu = Time::now()->subMonths(1);
+
+        $this->setoran_model->where('tanggal_setor >=', $satu_bulan_yang_lalu);
+        $this->setoran_model->where('id_teller', $this->logged_in_user['id']);
+        $statistik['setoran'] = $this->setoran_model->countAllResults();
+
+        $this->penarikan_model->where('tanggal_penarikan >=', $satu_bulan_yang_lalu);
+        $this->penarikan_model->where('id_teller', $this->logged_in_user['id']);
+        $statistik['penarikan'] = $this->penarikan_model->countAllResults();
+
         $data = [
             'title' => 'Dashboard Teller',
+            'statistik' => $statistik,
+            'kategori_list' => $kategori_list,
             'nasabah_list' => $nasabah_list,
             'setoran_list' => $setoran_list,
             'penarikan_list' => $penarikan_list,
@@ -86,7 +124,10 @@ class Home extends BaseController
 
     public function dashboard_admin()
     {
+        $this->nasabah_model->orderBy('tanggal_daftar', 'DESC');
         $nasabah_list = $this->nasabah_model->findAll(5);
+
+        $this->teller_model->orderBy('tanggal_daftar', 'DESC');
         $teller_list = $this->teller_model->findAll(5);
 
         $this->setoran_model->select('setoran.*, teller.nama_lengkap as teller_nama_lengkap, nasabah.nama_lengkap as nasabah_nama_lengkap');
@@ -103,8 +144,25 @@ class Home extends BaseController
 
         $kategori_list = $this->kategori_model->findAll(5);
 
+        $statistik = [];
+
+        $satu_bulan_yang_lalu = Time::now()->subMonths(1);
+
+        $this->setoran_model->where('tanggal_setor >=', $satu_bulan_yang_lalu);
+        $statistik['setoran'] = $this->setoran_model->countAllResults();
+
+        $this->penarikan_model->where('tanggal_penarikan >=', $satu_bulan_yang_lalu);
+        $statistik['penarikan'] = $this->penarikan_model->countAllResults();
+
+        $this->nasabah_model->where('tanggal_daftar >=', $satu_bulan_yang_lalu);
+        $statistik['nasabah_baru'] = $this->nasabah_model->countAllResults();
+
+        $this->setoran_model->where('tanggal_setor >=', $satu_bulan_yang_lalu);
+        $statistik['berat'] = number_format($this->setoran_model->selectSum('berat')->first()['berat'], 2);
+
         $data = [
             'title' => 'Dashboard Admin',
+            'statistik' => $statistik,
             'nasabah_list' => $nasabah_list,
             'teller_list' => $teller_list,
             'setoran_list' => $setoran_list,
