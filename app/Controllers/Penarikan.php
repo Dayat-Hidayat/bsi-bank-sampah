@@ -3,19 +3,15 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 class Penarikan extends BaseController
 {
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
-        parent::initController($request, $response, $logger);
-    }
-
     public function index()
     {
+        if (!$this->user_role) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         // tampilan halaman list penarikan
         // jika role admin, maka tampilkan semua data penarikan
         // jika role teller atau user, maka tampilkan data penarikan yang memiliki id teller atau user tersebut
@@ -25,8 +21,8 @@ class Penarikan extends BaseController
         // tampilkan data ke view
 
         $this->penarikan_model->select('penarikan.*, teller.nama_lengkap as teller_nama_lengkap, nasabah.nama_lengkap as nasabah_nama_lengkap');
-        $this->penarikan_model->join('teller', 'teller.id = penarikan.id_teller');
-        $this->penarikan_model->join('nasabah', 'nasabah.id = penarikan.id_nasabah');
+        $this->penarikan_model->join('teller', 'teller.id = penarikan.id_teller', 'left');
+        $this->penarikan_model->join('nasabah', 'nasabah.id = penarikan.id_nasabah', 'left');
 
         $this->penarikan_model->orderBy('tanggal_penarikan', 'DESC');
 
@@ -48,7 +44,7 @@ class Penarikan extends BaseController
 
     public function tambah()
     {
-        if ($this->user_role != 'teller' && $this->user_role != 'nasabah') {
+        if (!in_array($this->user_role, ['teller', 'admin'])) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
@@ -59,7 +55,7 @@ class Penarikan extends BaseController
             $kategori_sampah_list = $this->kategori_model->findAll();
 
             $data = [
-                'title' => 'Tambah Setoran',
+                'title' => 'Tambah Penarikan Baru',
                 'nasabah_list' => $nasabah_list,
                 'teller_list' => $teller_list,
                 'kategori_sampah_list' => $kategori_sampah_list,

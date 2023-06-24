@@ -6,9 +6,9 @@
     <div class="card">
         <div class="card-body">
             <h2 class="card-title text-center py-4">
-                Pendaftaran Teller Baru
+                Pendaftaran Nasabah Baru
             </h2>
-            <form action="<?= base_url('teller/tambah') ?>" method="POST" class="mx-auto">
+            <form action="<?= base_url('nasabah/tambah') ?>" method="POST" class="mx-auto">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" id="username" name="username" placeholder="Username" class="form-control" required>
@@ -39,7 +39,7 @@
                     <label for="email" class="form-label">Email</label>
                     <input type="email" id="email" name="email" placeholder="Email" class="form-control" required>
                 </div>
-                <button class="btn btn-primary w-100">Daftarkan Teller</button>
+                <button class="btn btn-primary w-100">Daftarkan Nasabah</button>
             </form>
         </div>
     </div>

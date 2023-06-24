@@ -9,6 +9,7 @@ class MTeller extends BaseUserModel
         'username',
         'password',
         'nama_lengkap',
+        'alamat',
         'nomor_telepon',
         'email',
         'tanggal_daftar',
@@ -22,6 +23,7 @@ class MTeller extends BaseUserModel
         'username'      => 'required|alpha_dash|min_length[5]|max_length[255]|is_unique[teller.username,id,{id}]',
         'password'      => 'required|min_length[5]|max_length[255]',
         'nama_lengkap'  => 'required|min_length[1]|max_length[255]',
+        'alamat'        => 'required|min_length[1]|max_length[2000]',
         'nomor_telepon' => 'required|min_length[5]|max_length[255]',
         'email'         => 'required|valid_email|max_length[255]',
     ];
@@ -45,6 +47,11 @@ class MTeller extends BaseUserModel
             'required'      => 'Nama lengkap wajib diisi',
             'min_length'    => 'Nama lengkap minimal 1 karakter',
             'max_length'    => 'Nama lengkap maksimal 255 karakter',
+        ],
+        'alamat'        => [
+            'required'      => 'Alamat wajib diisi',
+            'min_length'    => 'Alamat minimal 1 karakter',
+            'max_length'    => 'Alamat maksimal 2000 karakter',
         ],
         'nomor_telepon' => [
             'required'      => 'Nomor telepon wajib diisi',

@@ -3,7 +3,7 @@
 <?= $this->section('content'); ?>
 
 <div class="container">
-    <?= $this->include('components/list/penarikan') ?>
+    <?= $this->include('components/list/kategori') ?>
 </div>
 
 <?= $this->endSection(); ?>

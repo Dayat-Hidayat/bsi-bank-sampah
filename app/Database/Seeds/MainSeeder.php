@@ -19,7 +19,6 @@ class MainSeeder extends Seeder
             [
                 'username' => 'admin',
                 'password' => password_hash('admin', PASSWORD_DEFAULT),
-                'nama_lengkap' => 'Administrator',
                 'terakhir_login' => $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format),
             ]
         ];
@@ -31,18 +30,20 @@ class MainSeeder extends Seeder
                 'username' => 'teller',
                 'password' => password_hash('teller', PASSWORD_DEFAULT),
                 'nama_lengkap' => 'Teller',
+                'alamat' => $faker->address(),
                 'nomor_telepon' => $faker->phoneNumber(),
                 'email' => $faker->email(),
                 'tanggal_daftar' => $tanggal,
                 'terakhir_login' => $tanggal,
+                'is_active' => 1,
             ]
         ];
 
-        // Ubah Faker Jadi 4 dari 10, Biar gak kebanyakan data. Pusing liatnya!!
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 5; $i++) {
             $tanggal = $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format);
             $username = $faker->userName;
             $nama_lengkap = $faker->name();
+            $alamat = $faker->address();
             $nomor_telepon = $faker->phoneNumber();
             $email = $faker->email();
             $tanggal_daftar = $tanggal;
@@ -52,10 +53,12 @@ class MainSeeder extends Seeder
                 'username' => $username,
                 'password' => password_hash($username, PASSWORD_DEFAULT),
                 'nama_lengkap' => $nama_lengkap,
+                'alamat' => $alamat,
                 'nomor_telepon' => $nomor_telepon,
                 'email' => $email,
                 'tanggal_daftar' => $tanggal_daftar,
                 'terakhir_login' => $terakhir_login,
+                'is_active' => $faker->boolean(90),
             ];
         }
 
@@ -74,16 +77,14 @@ class MainSeeder extends Seeder
                 'alamat' => $faker->address(),
                 'nomor_telepon' => $faker->phoneNumber(),
                 'email' => $faker->email(),
-                'saldo' => 0,
+                'saldo' => $faker->numberBetween(0, 200000),
                 'tanggal_daftar' => $tanggal,
                 'terakhir_login' => $tanggal,
-                // Nasabah Akun Kenapa pakai faker ? Kalo dapet is_active 0 nanti kan gak bisa login
-                'is_active' => $faker->boolean(85),
+                'is_active' => 1,
             ]
         ];
 
-        // Ubah Faker Jadi 4 dari 25, Biar gak kebanyakan data. Pusing liatnya!!
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $tanggal = $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format);
 
             $username = $faker->userName;
@@ -135,9 +136,7 @@ class MainSeeder extends Seeder
             $kategori[] = [
                 'nama' => $kategori_yang_ada[$i],
                 'taksiran' => $faker->numberBetween(1000, 10000),
-                // Kenapa Stok Pake Float ??
-                // Ubah Jadi number dari randomFloat(2, 0, 10)
-                'stok' => $faker->numberBetween(10, 50),
+                'stok' => $faker->randomFloat(2, 0, 20),
                 'terakhir_diperbarui' => $faker->dateTimeThisYear('now', 'Asia/Jakarta')->format($date_format),
             ];
         }

@@ -14,20 +14,20 @@ $user = $session->get('user');
     <div class="card mb-3">
         <div class="card-body">
             <h2 class="card-title text-center py-4">
-                <?php if ($role == 'teller' && $user['id'] == $teller['id']) : ?>
+                <?php if ($role == 'nasabah' && $user['id'] == $nasabah['id']) : ?>
                     Perbarui Profile
                 <?php else : ?>
-                    Perbarui Data Teller (<?= $teller['nama_lengkap'] ?>)
+                    Perbarui Data Nasabah (<?= $nasabah['nama_lengkap'] ?>)
                 <?php endif; ?>
             </h2>
-            <form action="<?= base_url('teller/ubah/' . $teller['id']) ?>" method="POST" class="mx-auto">
+            <form action="<?= base_url('nasabah/ubah/' . $nasabah['id']) ?>" method="POST" class="mx-auto">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" id="username" name="username" placeholder="Username" class="form-control" value="<?= $teller['username'] ?>" required>
+                    <input type="text" id="username" name="username" placeholder="Username" class="form-control" value="<?= $nasabah['username'] ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="nama_lengkap" class="form-label">Nama Lengkap</label>
-                    <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap" class="form-control" value="<?= $teller['nama_lengkap'] ?>" required>
+                    <input type="text" id="nama_lengkap" name="nama_lengkap" placeholder="Nama Lengkap" class="form-control" value="<?= $nasabah['nama_lengkap'] ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="alamat" class="form-label">Alamat</label>
@@ -35,20 +35,20 @@ $user = $session->get('user');
                 </div>
                 <div class="mb-3">
                     <label for="nomor_telepon" class="form-label">Nomor Telepon</label>
-                    <input type="tel" id="nomor_telepon" name="nomor_telepon" placeholder="Nomor Telepon: 1234-5678-9123" class="form-control" value="<?= $teller['nomor_telepon'] ?>" required>
+                    <input type="tel" id="nomor_telepon" name="nomor_telepon" placeholder="Nomor Telepon: 1234-5678-9123" class="form-control" value="<?= $nasabah['nomor_telepon'] ?>" required>
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" id="email" name="email" placeholder="Email" class="form-control" value="<?= $teller['email'] ?>" required>
+                    <input type="email" id="email" name="email" placeholder="Email" class="form-control" value="<?= $nasabah['email'] ?>" required>
                 </div>
-                <?php if ($role == 'admin') : ?>
+                <?php if (in_array($role, ['admin', 'teller'])) : ?>
                     <div class="mb-3">
-                        <?php if ($teller['is_active']) : ?>
+                        <?php if ($nasabah['is_active']) : ?>
                             <input class="form-check-input" type="checkbox" name="is_active" id="is_active" checked>
                         <?php else : ?>
                             <input class="form-check-input" type="checkbox" name="is_active" id="is_active">
                         <?php endif; ?>
-                        <label class="form-check-label ms-2" for="is_active">
+                        <label class="form-check-label" for="is_active">
                             Is Active
                         </label>
                     </div>
@@ -57,12 +57,12 @@ $user = $session->get('user');
             </form>
         </div>
     </div>
-    <div class="card mb-3">
+    <div class="card">
         <div class="card-body">
             <h2 class="card-title text-center py-4">
                 Ganti Password
             </h2>
-            <form action="<?= base_url('teller/ubah/' . $teller['id'] . '/ganti-password') ?>" method="POST" class="mx-auto">
+            <form action="<?= base_url('nasabah/ubah/' . $nasabah['id'] . '/ganti-password') ?>" method="POST" class="mx-auto">
                 <div class="mb-3">
                     <label for="password_lama" class="form-label">Password Lama</label>
                     <input type="password" id="password_lama" name="password_lama" placeholder="Password Lama" class="form-control" required>
@@ -96,6 +96,7 @@ $user = $session->get('user');
 </div>
 
 <?php if ($role == 'admin') : ?>
+
     <!-- Modal -->
     <div class="modal fade" id="hapus" tabindex="-1" aria-labelledby="hapusLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -106,7 +107,7 @@ $user = $session->get('user');
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <form action="<?= base_url('teller/hapus/' . $teller['id']) ?>" method="POST">
+                    <form action="<?= base_url('nasasbah/hapus/' . $teller['id']) ?>" method="POST">
                         <button class="btn btn-danger w-100">Ya, Hapus Akun Ini</button>
                     </form>
                 </div>
@@ -114,6 +115,5 @@ $user = $session->get('user');
         </div>
     </div>
 <?php endif; ?>
-
 
 <?= $this->endSection(); ?>

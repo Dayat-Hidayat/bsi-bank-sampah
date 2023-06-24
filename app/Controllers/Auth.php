@@ -3,22 +3,17 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 class Auth extends BaseController
 {
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
-        parent::initController($request, $response, $logger);
-    }
-
     public function login()
     {
         if ($this->request->is('get')) {
             // tampilkan halaman login
-            return view('auth/login');
+            $data = [
+                'title' => 'Login',
+            ];
+            return view('auth/login', $data);
         } else if ($this->request->is('post')) {
             // PROSES LOGIN
 
@@ -37,8 +32,12 @@ class Auth extends BaseController
                 $user = $this->admin_model->where('username', $username)->first();
             } else if ($role == 'teller') {
                 $user = $this->teller_model->where('username', $username)->first();
-            } else {
+            } else if ($role == 'nasabah') {
                 $user = $this->nasabah_model->where('username', $username)->first();
+            } else {
+                $this->session->setFlashdata('error_list', ['role' => 'Role tidak ditemukan']);
+
+                return redirect()->back();
             }
 
             if ($user) {
@@ -48,7 +47,7 @@ class Auth extends BaseController
 
                     $this->session->setFlashdata('sukses_list', ['login' => 'Anda berhasil login']);
 
-                    return redirect()->to((string) $role);
+                    return redirect()->to('');
                 } else {
                     $this->session->setFlashdata('error_list', ['password' => 'Password salah']);
 
@@ -69,9 +68,9 @@ class Auth extends BaseController
     {
         // hapus data user dari session
         $this->session->destroy();
-        $this->session->setFlashdata('success_list', 'Anda berhasil logout');
+        $this->session->setFlashdata('sukses_list', ['logout' => 'Anda berhasil logout']);
 
         // redirect ke halaman login
-        return redirect()->to('auth/login');
+        return redirect()->to('');
     }
 }

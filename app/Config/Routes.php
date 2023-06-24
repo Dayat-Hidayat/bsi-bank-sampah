@@ -37,39 +37,41 @@ $routes->group('auth', function ($routes) {
 });
 $routes->group('kategori', function ($routes) {
     $routes->get('', 'Kategori::index');
-    $routes->post('tambah', 'Kategori::process_tambah');
-    $routes->get('ubah/(:num)', 'Kategori::ubah');
+    $routes->match(['get', 'post'], 'tambah', 'Kategori::tambah');
+    $routes->match(['get', 'post'], 'ubah/(:num)', 'Kategori::ubah/$1');
+    $routes->post('hapus/(:num)', 'Kategori::hapus/$1/$1');
 });
 $routes->group('nasabah', function ($routes) {
     $routes->get('', 'Nasabah::index');
     $routes->match(['get', 'post'], 'tambah', 'Nasabah::tambah');
     $routes->match(['get', 'post'], 'ubah/(:num)', 'Nasabah::ubah/$1');
-    $routes->post('hapus/(:num)', 'Nasabah::hapus');
+    $routes->post('ubah/(:num)/ganti-password', 'Nasabah::ganti_password/$1');
+    $routes->post('hapus/(:num)', 'Nasabah::hapus/$1');
 });
 $routes->group('teller', function ($routes) {
     $routes->get('', 'Teller::index');
     $routes->match(['get', 'post'], 'tambah', 'Teller::tambah');
     $routes->match(['get', 'post'], 'ubah/(:num)', 'Teller::ubah/$1');
     $routes->post('ubah/(:num)/ganti-password', 'Teller::ganti_password/$1');
-    $routes->post('hapus/(:num)', 'Teller::hapus');
+    $routes->post('hapus/(:num)', 'Teller::hapus/$1');
 });
 $routes->group('admin', function ($routes) {
     $routes->get('', 'admin::index');
     $routes->match(['get', 'post'], 'tambah', 'admin::tambah');
     $routes->match(['get', 'post'], 'ubah/(:num)', 'admin::ubah/$1');
-    $routes->post('hapus/(:num)', 'admin::hapus');
+    $routes->post('hapus/(:num)', 'admin::hapus/$1');
 });
 $routes->group('setoran', function ($routes) {
     $routes->get('', 'Setoran::index');
     $routes->match(['get', 'post'], 'tambah', 'Setoran::tambah');
     $routes->match(['get', 'post'], 'ubah/(:num)', 'Setoran::ubah/$1');
-    $routes->post('hapus/(:num)', 'Setoran::hapus');
+    $routes->post('hapus/(:num)', 'Setoran::hapus/$1');
 });
 $routes->group('penarikan', function ($routes) {
     $routes->get('', 'Penarikan::index');
     $routes->match(['get', 'post'], 'tambah', 'Penarikan::tambah');
-    $routes->match(['get', 'post'], 'ubah/(:num)', 'Penarikan::ubah');
-    $routes->post('hapus/(:num)', 'Penarikan::hapus');
+    $routes->match(['get', 'post'], 'ubah/(:num)', 'Penarikan::ubah/$1');
+    $routes->post('hapus/(:num)', 'Penarikan::hapus/$1');
 });
 $routes->get('error/(:num)', 'Error::error/$1');
 

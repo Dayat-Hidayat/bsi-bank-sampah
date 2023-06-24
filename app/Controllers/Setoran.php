@@ -3,26 +3,22 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use CodeIgniter\HTTP\RequestInterface;
-use CodeIgniter\HTTP\ResponseInterface;
-use Psr\Log\LoggerInterface;
 
 class Setoran extends BaseController
 {
-    public function initController(RequestInterface $request, ResponseInterface $response, LoggerInterface $logger)
-    {
-        parent::initController($request, $response, $logger);
-    }
-
     public function index()
     {
+        if (!$this->user_role) {
+            throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
+        }
+
         // tampilan halaman list setoran
         // jika role admin, maka tampilkan semua data setoran
         // jika role teller atau user, maka tampilkan data setoran yang memiliki id teller atau user tersebut
 
         $this->setoran_model->select('setoran.*, teller.nama_lengkap as teller_nama_lengkap, nasabah.nama_lengkap as nasabah_nama_lengkap');
-        $this->setoran_model->join('teller', 'teller.id = setoran.id_teller');
-        $this->setoran_model->join('nasabah', 'nasabah.id = setoran.id_nasabah');
+        $this->setoran_model->join('teller', 'teller.id = setoran.id_teller', 'left');
+        $this->setoran_model->join('nasabah', 'nasabah.id = setoran.id_nasabah', 'left');
 
         $this->setoran_model->orderBy('tanggal_setor', 'DESC');
 
@@ -44,7 +40,7 @@ class Setoran extends BaseController
 
     public function tambah()
     {
-        if ($this->user_role != 'teller' && $this->user_role != 'nasabah') {
+        if (!in_array($this->user_role, ['teller', 'admin'])) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
 
@@ -54,7 +50,7 @@ class Setoran extends BaseController
             $kategori_sampah_list = $this->kategori_model->findAll();
 
             $data = [
-                'title' => 'Tambah Setoran',
+                'title' => 'Tambah Setoran Baru',
                 'nasabah_list' => $nasabah_list,
                 'teller_list' => $teller_list,
                 'kategori_sampah_list' => $kategori_sampah_list,
@@ -122,17 +118,22 @@ class Setoran extends BaseController
                 'nominal' => $nominal,
             ]);
 
+            $this->kategori_model->update($id_kategori_sampah, [
+                'stok' => $kategori_sampah['stok'] + $berat,
+            ]);
+
             $this->nasabah_model->update($id_nasabah, [
                 'saldo' => $nasabah['saldo'] + $nominal,
             ]);
 
             $penarikan_errors = $this->setoran_model->errors();
+            $kategori_errors = $this->kategori_model->errors();
             $nasabah_errors = $this->nasabah_model->errors();
 
-            if ($penarikan_errors || $nasabah_errors || $this->db->transStatus() === FALSE) {
+            if ($penarikan_errors || $kategori_errors || $nasabah_errors || $this->db->transStatus() === FALSE) {
                 $this->db->transRollback();
 
-                $this->session->setFlashdata('error_list', array_merge($penarikan_errors, $nasabah_errors));
+                $this->session->setFlashdata('error_list', array_merge($penarikan_errors, $kategori_errors, $nasabah_errors));
 
                 return redirect()->back();
             } else {
