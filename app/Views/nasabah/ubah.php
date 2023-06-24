@@ -20,7 +20,7 @@ $user = $session->get('user');
                     Perbarui Data Nasabah (<?= $nasabah['nama_lengkap'] ?>)
                 <?php endif; ?>
             </h2>
-            <form action="<?= base_url('nasabah/tambah') ?>" method="POST" class="mx-auto">
+            <form action="<?= base_url('nasabah/ubah/' . $nasabah['id']) ?>" method="POST" class="mx-auto">
                 <div class="mb-3">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" id="username" name="username" placeholder="Username" class="form-control" value="<?= $nasabah['username'] ?>" required>
@@ -44,11 +44,11 @@ $user = $session->get('user');
                 <?php if (in_array($role, ['admin', 'teller'])) : ?>
                     <div class="mb-3">
                         <?php if ($nasabah['is_active']) : ?>
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" checked>
+                            <input class="form-check-input" type="checkbox" name="is_active" id="is_active" checked>
                         <?php else : ?>
-                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" name="is_active" id="is_active">
                         <?php endif; ?>
-                        <label class="form-check-label" for="flexCheckDefault">
+                        <label class="form-check-label" for="is_active">
                             Is Active
                         </label>
                     </div>

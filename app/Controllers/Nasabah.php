@@ -111,7 +111,7 @@ class Nasabah extends BaseController
     {
         if (
             !in_array($this->user_role, ['admin', 'teller'])
-            || !($this->user_role == 'nasabah' && $this->logged_in_user['id'] == $id)
+            && !($this->user_role == 'nasabah' && $this->logged_in_user['id'] == $id)
         ) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound();
         }
@@ -139,10 +139,12 @@ class Nasabah extends BaseController
             $alamat = $this->request->getPost('alamat');
             $email = $this->request->getPost('email');
             $nomor_telepon = $this->request->getPost('nomor_telepon');
+            $is_active = in_array($this->user_role, ['admin', 'teller']) ? $this->request->getPost('is_active') : $nasabah['is_active'];
 
             // validasi data
             $this->validateData(
                 [
+                    'id' => $id,
                     'username' => $username,
                     'nama_lengkap' => $nama_lengkap,
                     'alamat' => $alamat,
@@ -151,6 +153,7 @@ class Nasabah extends BaseController
                 ],
                 $this->nasabah_model->getValidationRules([
                     'only' => [
+                        'id',
                         'username',
                         'nama_lengkap',
                         'alamat',
@@ -168,11 +171,13 @@ class Nasabah extends BaseController
             }
 
             $this->nasabah_model->update($id, [
+                'id' => $id,
                 'username' => $username,
                 'nama_lengkap' => $nama_lengkap,
                 'alamat' => $alamat,
                 'email' => $email,
                 'nomor_telepon' => $nomor_telepon,
+                'is_active' => $is_active == 'on' || $is_active ? 1 : 0
             ]);
 
             if ($errors = $this->nasabah_model->errors()) {
@@ -185,7 +190,7 @@ class Nasabah extends BaseController
                     ['nasabah' => join(' ', ['Nasabah', $nasabah['nama_lengkap'], 'berhasil diubah'])]
                 );
 
-                return redirect()->to('nasabah');
+                return redirect()->to('nasabah/ubah/' . $id);
             }
         } else {
             // jika bukan get atau post, maka tampilkan error 404
@@ -254,7 +259,7 @@ class Nasabah extends BaseController
         } else {
             $this->session->setFlashdata('sukses_list', ['password' => 'Password berhasil diubah']);
 
-            return redirect()->to('nasabah');
+            return redirect()->to('nasabah/ubah/' . $id);
         }
     }
 

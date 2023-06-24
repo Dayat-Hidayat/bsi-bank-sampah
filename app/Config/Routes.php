@@ -45,6 +45,7 @@ $routes->group('nasabah', function ($routes) {
     $routes->get('', 'Nasabah::index');
     $routes->match(['get', 'post'], 'tambah', 'Nasabah::tambah');
     $routes->match(['get', 'post'], 'ubah/(:num)', 'Nasabah::ubah/$1');
+    $routes->post('ubah/(:num)/ganti-password', 'Nasabah::ganti_password/$1');
     $routes->post('hapus/(:num)', 'Nasabah::hapus/$1');
 });
 $routes->group('teller', function ($routes) {

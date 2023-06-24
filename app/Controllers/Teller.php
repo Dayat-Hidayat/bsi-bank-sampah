@@ -142,10 +142,12 @@ class Teller extends BaseController
             $nama_lengkap = $this->request->getPost('nama_lengkap');
             $email = $this->request->getPost('email');
             $nomor_telepon = $this->request->getPost('nomor_telepon');
+            $is_active = $this->user_role == 'admin' ? $this->request->getPost('is_active') : $teller['is_active'];
 
             // validasi data
             $this->validateData(
                 [
+                    'id' => $id,
                     'username' => $username,
                     'nama_lengkap' => $nama_lengkap,
                     'email' => $email,
@@ -153,6 +155,7 @@ class Teller extends BaseController
                 ],
                 $this->teller_model->getValidationRules([
                     'only' => [
+                        'id',
                         'username',
                         'nama_lengkap',
                         'email',
@@ -169,10 +172,12 @@ class Teller extends BaseController
             }
 
             $this->teller_model->update($id, [
+                'id' => $id,
                 'username' => $username,
                 'nama_lengkap' => $nama_lengkap,
                 'email' => $email,
                 'nomor_telepon' => $nomor_telepon,
+                'is_active' => $is_active == 'on' || $is_active ? 1 : 0,
             ]);
 
             if ($errors = $this->teller_model->errors()) {
@@ -185,7 +190,7 @@ class Teller extends BaseController
                     ['teller' => join(' ', ['Teller', $teller['nama_lengkap'], 'berhasil diubah'])]
                 );
 
-                return redirect()->to('teller');
+                return redirect()->to('teller/ubah/' . $id);
             }
         } else {
             // jika bukan get atau post, maka tampilkan error 404
@@ -255,7 +260,7 @@ class Teller extends BaseController
         } else {
             $this->session->setFlashdata('sukses_list', ['password' => 'Password berhasil diubah']);
 
-            return redirect()->to('teller');
+            return redirect()->to('teller/ubah/' . $id);
         }
     }
 
