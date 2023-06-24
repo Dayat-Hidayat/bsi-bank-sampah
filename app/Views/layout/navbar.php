@@ -17,6 +17,17 @@ $user = $session->get('user');
                 <li class="nav-item">
                     <a class="nav-link" href="<?= base_url() ?>">Home</a>
                 </li>
+                <?php if ($role == 'admin') : ?>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Kategori
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="<?= base_url('kategori') ?>">List</a></li>
+                            <li><a class="dropdown-item" href="<?= base_url('kategori/tambah') ?>">Tambah</a></li>
+                        </ul>
+                    </li>
+                <?php endif; ?>
                 <?php if (in_array($role, ['teller', 'nasabah'])) : ?>
                     <li class="nav-item">
                         <a class="nav-link" href="<?= base_url($role . '/ubah/' . $user['id']) ?>">

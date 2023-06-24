@@ -10,7 +10,7 @@ $role = $session->get('role');
     <h3 class="card-header">
         Kategori
         <?php if ($role == 'admin') : ?>
-            <a href="<?= base_url('penarikan/tambah') ?>" class="btn btn-primary">Tambah</a>
+            <a href="<?= base_url('kategori/tambah') ?>" class="btn btn-primary">Tambah</a>
         <?php endif; ?>
     </h3>
     <div class="card-body">
@@ -24,7 +24,7 @@ $role = $session->get('role');
                         <?php endif; ?>
                         <th scope="col">Nama</th>
                         <th scope="col">Deskripsi</th>
-                        <th scope="col">Taksiran (Kg)</th>
+                        <th scope="col">Taksiran (kg)</th>
                         <?php if (in_array($role, ['admin', 'teller'])) : ?>
                             <th scope="col">Stok (kg)</th>
                         <?php endif; ?>

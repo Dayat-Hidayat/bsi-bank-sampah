@@ -27,7 +27,7 @@ $role = $session->get('role');
                             <th scope="col">Teller</th>
                         <?php endif; ?>
                         <th scope="col">Nominal</th>
-                        <th scope="col">Tanggal</th>
+                        <th scope="col">Tanggal Penarikan</th>
                     </tr>
                 </thead>
                 <tbody>

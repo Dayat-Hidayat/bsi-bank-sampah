@@ -28,7 +28,7 @@ $role = $session->get('role');
                         <?php endif; ?>
                         <th scope="col">Kategori Sampah</th>
                         <th scope="col">Berat</th>
-                        <th scope="col">Taksiran (Kg)</th>
+                        <th scope="col">Taksiran (kg)</th>
                         <th scope="col">Total</th>
                         <th scope="col">Tanggal Setor</th>
                     </tr>

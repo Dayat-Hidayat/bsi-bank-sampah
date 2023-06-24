@@ -19,7 +19,7 @@ $session = session();
                     <input type="text" id="username" name="username" placeholder="Username" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="username" class="form-label">Password</label>
+                    <label for="password" class="form-label">Password</label>
                     <input type="password" id="password" name="password" placeholder="Password" class="form-control" required>
                 </div>
                 <div class="mb-3">
@@ -34,6 +34,5 @@ $session = session();
             </form>
         </div>
     </div>
-
 </div>
 <?= $this->endSection(); ?>
