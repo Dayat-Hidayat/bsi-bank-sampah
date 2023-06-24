@@ -44,12 +44,22 @@ class MKategori extends Model
 
     // Callbacks
     protected $beforeInsert = ['cb_insert_terakhir_diperbarui'];
-    protected $beforeUpdate = ['cb_insert_terakhir_diperbarui'];
+    protected $beforeUpdate = ['cb_insert_terakhir_diperbarui_update'];
 
     public function cb_insert_terakhir_diperbarui(array $data)
     {
         $data['data']['terakhir_diperbarui'] = date('Y-m-d H:i:s');
 
         return $data;
+    }
+
+    // hanya update terakhir_diperbarui jika taksiran berubah
+    public function cb_insert_terakhir_diperbarui_update(array $data)
+    {
+        if (isset($data['data']['taksiran'])) {
+            $data['data']['terakhir_diperbarui'] = date('Y-m-d H:i:s');
+
+            return $data;
+        }
     }
 }

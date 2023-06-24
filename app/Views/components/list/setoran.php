@@ -19,8 +19,8 @@ $role = $session->get('role');
                 <thead>
                     <tr>
                         <th scope="col">#</th>
+                        <th scope="col">ID</th>
                         <?php if (in_array($role, ['admin', 'teller'])) : ?>
-                            <th scope="col">ID</th>
                             <th scope="col">Nasabah</th>
                         <?php endif; ?>
                         <?php if (in_array($role, ['admin', 'nasabah'])) : ?>
@@ -37,8 +37,8 @@ $role = $session->get('role');
                     <?php foreach ($setoran_list as $i => $setoran) : ?>
                         <tr>
                             <th scope="row"><?= $i + 1 ?></th>
+                            <td><?= $setoran['id']; ?></td>
                             <?php if (in_array($role, ['admin', 'teller'])) : ?>
-                                <td><?= $setoran['id']; ?></td>
                                 <td><?= $setoran['nasabah_nama_lengkap']; ?></td>
                             <?php endif; ?>
                             <?php if (in_array($role, ['admin', 'nasabah'])) : ?>
