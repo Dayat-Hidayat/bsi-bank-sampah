@@ -4,7 +4,7 @@
 <?= $this->section('content'); ?>
 
 <div class="container">
-    <h1>Menu Penarikan <?= $username_login; ?></h1>
+    <h1>Menu Penarikan</h1>
     <table class="table align-middle">
         <thead class="align-middle">
             <tr>

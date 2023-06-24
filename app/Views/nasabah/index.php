@@ -5,7 +5,7 @@ $session = session(); ?>
 <?= $this->section('content'); ?>
 
 <div class="container">
-    <h1>Test Ini Adalah Menu Akun Nasabah <?= $username_login; ?></h1>
+    <h1>Test Ini Adalah Menu Akun Nasabah</h1>
     <table class="table align-middle">
         <thead class="align-middle">
             <tr>
